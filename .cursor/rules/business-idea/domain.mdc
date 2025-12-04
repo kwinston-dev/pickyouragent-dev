@@ -1,0 +1,152 @@
+---
+description: This rule is about how I pick the domain name
+alwaysApply: false
+---
+
+# Domain Decision Record: `pickyouragent.dev`
+
+**Date:** 2025-11-30  
+**Project:** Comparison site for AI coding agents
+
+---
+
+## 1. Decision
+
+The primary domain for the project is:
+
+> **`pickyouragent.dev`**
+
+This will be used as the main public entry point for the site and future related materials (docs, guides, etc.).
+
+---
+
+## 2. Project context
+
+The site focuses on:
+
+- Comparing **AI coding agents** in a **single, structured table**.
+- Highlighting and explaining **which features each agent has**.
+- Providing **justification for why each feature matters** in modern software development (planning, reasoning visibility, tests, tooling, etc.).
+- Helping developers make an **informed choice** of agent based on their actual workflow and constraints.
+
+The site is aimed primarily at **developers** and **technical users**.
+
+---
+
+## 3. Options considered
+
+### Shortlist
+
+- **`pickyouragent.dev`** ✅ (chosen)
+- **`pickagent.dev`**  
+- **`chooseyouragent.dev`**
+
+### Other conceptual directions (not chosen)
+
+- **`knowyouragent.dev`**
+- **`dontcodealone.dev`**
+- **`codewithagents.dev`**
+- **`upgradeyouragent.dev`**
+
+These were useful to clarify the brand direction (education + comparison), but not selected as the main domain.
+
+---
+
+## 4. Reasons for choosing `pickyouragent.dev`
+
+### 4.1 Natural, idiomatic English
+
+- The phrase **“pick your agent”** sounds like a normal, fluent imperative in English.
+- It can be directly reused in UI and marketing copy (headlines, buttons) without modification.
+- By contrast, **“pick agent”** feels grammatically incomplete and more “machine-like” to native speakers.
+
+**Consequence:** The domain itself can double as a short, clear product message.
+
+---
+
+### 4.2 Personal and developer-oriented tone
+
+- The word **“your”** makes the message personal: the site helps you find **your** agent, not just “some” agent.
+- This aligns well with the goal: the user compares tools and ends up with an agent (or stack of agents) that fits their **own** workflow and constraints.
+- It matches the idea of agents as **partners in development**, not just generic utilities.
+
+**Consequence:** The brand supports the narrative “build your own toolbelt of agents”.
+
+---
+
+### 4.3 Strong call-to-action matching the product
+
+- The core user flow is: **open site → compare agents in the table → understand features → pick an agent**.
+- The verb **“pick”** directly reflects this behavior and sets the expectation that the site is about **choice**, not just news or documentation.
+- The domain supports CTAs like:
+  - “Pick your coding agent with confidence”
+  - “Pick your agent based on how you really work”
+
+**Consequence:** The domain and the main interaction are tightly aligned.
+
+---
+
+### 4.4 Better balance than `pickagent.dev`
+
+- **`pickagent.dev`** is shorter, but:
+  - it reads less naturally in English;
+  - it feels more abstract and less user-focused;
+  - it’s harder to reuse as a sentence in copy.
+- **`pickyouragent.dev`** trades a few extra characters for:
+  - more natural language;
+  - a friendlier tone;
+  - immediate clarity.
+
+**Consequence:** Preference is given to clarity and “human-ness” over minimal length.
+
+---
+
+### 4.5 .dev TLD fits audience and scope
+
+- The **`.dev`** TLD signals that the site targets **developers**.
+- The content is technically focused: AI agents for code, dev workflows, tests, refactors, monorepos, etc.
+- This reduces confusion with non-technical “agents” (real estate, insurance, travel), which would be more common with a generic `.com`.
+
+**Consequence:** `.dev` helps set expectations and filters the audience toward developers.
+
+---
+
+## 5. Non-goals
+
+- The domain is **not** optimized for broad consumer traffic or SEO around generic “agents” (e.g., real estate / travel).
+- The domain is **not** intended to be a generic AI brand for all types of agents (chat, support, sales); the focus is on **coding/dev agents**.
+- The decision does **not** preclude adding subpaths or subprojects later (guides, news, playbooks) under the same domain.
+
+---
+
+## 6. How the domain should be used in branding
+
+### 6.1 Recommended hero usage
+
+- **Title example:**
+  > Pick your coding agent with confidence
+
+- **Subtitle example:**
+  > One comparison table for AI coding agents — with clear explanations why each feature matters for modern development.
+
+### 6.2 Tagline direction
+
+Optional taglines consistent with the decision:
+
+- “Understand the features. Pick your agent.”
+- “Compare AI coding agents, feature by feature.”
+- “Pick your agent based on how you really work.”
+
+---
+
+## 7. Future considerations
+
+- If the project later expands beyond coding agents (e.g., other developer AI tools), the domain still makes sense: the user is “picking their agent(s)” within the dev ecosystem.
+- If a separate consumer-facing brand is needed in the future, this domain can remain the **developer-focused hub** for detailed comparisons and feature breakdowns.
+
+---
+
+## 8. Final status
+
+- **Primary domain:** `pickyouragent.dev`  
+- **Status:** **Selected and adopted** as the canonical domain for the project.

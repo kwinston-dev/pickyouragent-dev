@@ -1,0 +1,112 @@
+---
+// Main comparison table page
+import '../styles/global.css';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Compare coding agents based on their features and capabilities" />
+    <title>Compare coding agents</title>
+  </head>
+  <body>
+    <main>
+      <h1>Compare coding agents</h1>
+      <p class="subtitle">Compare coding agents based on their features and capabilities</p>
+      
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Agent A</th>
+              <th>Agent B</th>
+              <th>Agent C</th>
+              <th>Agent D</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="category-header">
+              <td colspan="5">Planning</td>
+            </tr>
+            <tr>
+              <td>Multi-step planning</td>
+              <td><span class="symbol supported">✓</span></td>
+              <td><span class="symbol not-supported">✗</span></td>
+              <td><span class="symbol not-supported">✗</span></td>
+              <td><span class="symbol not-supported">✗</span></td>
+            </tr>
+            <tr>
+              <td>Plan editing</td>
+              <td><span class="symbol supported">✓</span></td>
+              <td><span class="symbol not-supported">✗</span></td>
+              <td><span class="symbol supported">✓</span></td>
+              <td><span class="symbol not-supported">✗</span></td>
+            </tr>
+            <tr>
+              <td>Plan execution</td>
+              <td><span class="symbol supported">✓</span></td>
+              <td><span class="symbol supported">✓</span></td>
+              <td><span class="symbol supported">✓</span></td>
+              <td><span class="symbol not-supported">✗</span></td>
+            </tr>
+            
+            <tr class="category-header">
+              <td colspan="5">Reasoning</td>
+            </tr>
+            <tr>
+              <td>Explanation in natural language</td>
+              <td><span class="symbol supported">✓</span></td>
+              <td><span class="symbol partially-supported">◐</span></td>
+              <td><span class="symbol not-supported">✗</span></td>
+              <td><span class="symbol supported">✓</span></td>
+            </tr>
+            <tr>
+              <td>Step-by-step view</td>
+              <td><span class="symbol supported">✓</span></td>
+              <td><span class="symbol not-supported">✗</span></td>
+              <td><span class="symbol supported">✓</span></td>
+              <td><span class="symbol supported">✓</span></td>
+            </tr>
+            
+            <tr class="category-header">
+              <td colspan="5">Tests</td>
+            </tr>
+            <tr>
+              <td>Test generation</td>
+              <td><span class="symbol not-supported">✗</span></td>
+              <td><span class="symbol supported">✓</span></td>
+              <td><span class="symbol supported">✓</span></td>
+              <td><span class="symbol not-supported">✗</span></td>
+            </tr>
+            <tr>
+              <td>Integrates with CI</td>
+              <td><span class="symbol supported">✓</span></td>
+              <td><span class="symbol supported">✓</span></td>
+              <td><span class="symbol not-supported">✗</span></td>
+              <td><span class="symbol not-supported">✗</span></td>
+            </tr>
+            <tr>
+              <td>Editor plugins available</td>
+              <td><span class="symbol supported">✓</span></td>
+              <td><span class="symbol not-supported">✗</span></td>
+              <td><span class="symbol supported">✓</span></td>
+              <td><span class="symbol not-supported">✗</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="legend">
+        <p><strong>Legend:</strong></p>
+        <ul>
+          <li><span class="symbol supported">✓</span> Fully supported</li>
+          <li><span class="symbol partially-supported">◐</span> Partially supported</li>
+          <li><span class="symbol not-supported">✗</span> Not supported</li>
+        </ul>
+      </div>
+    </main>
+  </body>
+</html>
+
