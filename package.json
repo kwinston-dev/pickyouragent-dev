@@ -17,6 +17,7 @@
   "dependencies": {
     "astro": "^5.16.4",
     "prettier": "^3.7.4",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "zod": "^4.1.13"
   }
 }

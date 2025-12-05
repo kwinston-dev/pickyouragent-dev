@@ -1,23 +1,23 @@
-import type { Agent } from '../featureSetSchema';
+import { declareSchema } from '../featureSetSchema';
 
-export const agent = {
+export const agent = declareSchema({
   id: 'agent-c',
   name: 'Agent C',
   features: {
     planning: {
-      'multi-step-planning': 'not-supported' as const,
-      'plan-editing': 'supported' as const,
-      'plan-execution': 'supported' as const,
+      'multi-step-planning': 'not-supported',
+      'plan-editing': 'supported',
+      'plan-execution': 'supported',
     },
     reasoning: {
-      'explanation-in-natural-language': 'not-supported' as const,
-      'step-by-step-view': 'supported' as const,
+      'explanation-in-natural-language': 'not-supported',
+      'step-by-step-view': 'supported',
     },
     tests: {
-      'test-generation': 'supported' as const,
-      'integrates-with-ci': 'not-supported' as const,
-      'editor-plugins-available': 'supported' as const,
+      'test-generation': 'supported',
+      'integrates-with-ci': 'not-supported',
+      'editor-plugins-available': 'supported',
     },
   },
-} satisfies Agent;
+});
 
