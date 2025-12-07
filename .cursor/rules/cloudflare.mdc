@@ -1,0 +1,138 @@
+---
+description: Cloudflare Pages configuration and deployment documentation for pickyouragent.dev
+alwaysApply: false
+---
+# Cloudflare Pages Configuration
+
+## Overview
+
+This project is deployed to Cloudflare Pages with a custom domain. The configuration ensures optimal caching behavior: Cloudflare edge servers cache all content, while browsers cache static assets but always fetch fresh HTML.
+
+## Cloudflare Configuration
+
+### Project Details
+- **Project ID**: `pickyouragent-dev`
+- **Production URL**: `pickyouragent-dev.pages.dev`
+- **Custom Domain**: `pickyouragent.dev`
+- **Deployment**: Automated via GitHub Actions workflow
+
+### Deployment Workflow
+
+Deployment is handled by `.github/workflows/deploy.yml`:
+1. Builds the Astro project using pnpm
+2. Uploads build artifacts
+3. Deploys to Cloudflare Pages using `wrangler-action@v3`
+4. Deploys from the `dist` directory to the `pickyouragent-dev` project
+5. Purges Cloudflare cache to ensure fresh content is served immediately
+
+### Caching Strategy
+
+The caching strategy is configured via `public/_headers` file, which is automatically copied to `dist/` during build and read by Cloudflare Pages.
+
+#### HTML Files (`/*.html`)
+- **Cloudflare Edge Cache**: 1 year (`s-maxage=31536000`)
+- **Browser Cache**: No caching (`max-age=0, must-revalidate`)
+- **Result**: Browsers always fetch fresh HTML, while Cloudflare serves cached versions for performance
+
+#### All Other Files (`/*`)
+- **Cloudflare Edge Cache**: 1 year (`s-maxage=31536000`)
+- **Browser Cache**: 1 year (`max-age=31536000`)
+- **Result**: Static assets (CSS, JS, images, etc.) are cached by both Cloudflare and browsers
+
+### Cache-Control Headers
+
+The `_headers` file contains:
+```
+/*.html
+  Cache-Control: public, s-maxage=31536000, max-age=0, must-revalidate
+
+/*
+  Cache-Control: public, s-maxage=31536000, max-age=31536000
+```
+
+**Key Directives**:
+- `public`: Allows caching by shared caches (Cloudflare edge) and browsers
+- `s-maxage=31536000`: Cloudflare edge cache duration (1 year in seconds)
+- `max-age=0`: For HTML - browsers must revalidate (no cache)
+- `max-age=31536000`: For other files - browsers cache for 1 year
+- `must-revalidate`: For HTML - browsers must check with server before using cached content
+
+### Cache Purging
+
+After each deployment, the workflow automatically purges the Cloudflare cache for the custom domain. This ensures that users immediately receive fresh content after deployment, even though Cloudflare edge servers cache content for performance.
+
+The cache purge step:
+- Runs immediately after successful deployment
+- Uses the Cloudflare API to purge all cached content for the zone
+- Requires `CLOUDFLARE_ZONE_ID` secret (zone ID for `pickyouragent.dev`)
+
+### How It Works
+
+1. **Build Process**: Astro copies `public/_headers` to `dist/_headers` during build
+2. **Deployment**: GitHub Actions deploys `dist/` to Cloudflare Pages
+3. **Cache Purge**: Cloudflare cache is purged to ensure fresh content
+4. **Cloudflare Processing**: Cloudflare Pages automatically reads `_headers` file
+5. **Request Handling**:
+   - HTML requests: Cloudflare serves from cache, browsers always fetch fresh
+   - Asset requests: Both Cloudflare and browsers serve from cache
+
+### Benefits
+
+- ✅ **Fast Edge Delivery**: Cloudflare caches all content at edge locations worldwide
+- ✅ **Fresh HTML**: Users always get the latest HTML content
+- ✅ **Efficient Asset Delivery**: Static assets are cached by browsers, reducing bandwidth
+- ✅ **Immediate Updates**: HTML changes are visible immediately to users
+- ✅ **Automatic Cache Invalidation**: Cache is automatically purged after each deployment
+
+### Required GitHub Secrets
+
+The deployment workflow requires the following secrets:
+- `CLOUDFLARE_API_TOKEN`: API token with Pages deployment and cache purge permissions
+- `CLOUDFLARE_ACCOUNT_ID`: Cloudflare account ID
+- `CLOUDFLARE_ZONE_ID`: Zone ID for the custom domain (`pickyouragent.dev`)
+
+**Note**: The zone ID can be found in the Cloudflare dashboard under the domain's overview page.
+
+### API Token Permissions
+
+The `CLOUDFLARE_API_TOKEN` must have the following permissions:
+
+#### For Pages Deployment:
+- **Account** → **Cloudflare Pages** → **Edit** (or **Read** if using read-only token)
+- **Account** → **Account** → **Read** (to access account information)
+
+#### For Cache Purging:
+- **Zone** → **Cache Purge** → **Purge** (required to purge cached content)
+- **Zone** → **Zone** → **Read** (required to access zone details)
+
+#### Zone Resources:
+- **Include** → **Specific Zone** → `pickyouragent.dev` (or use account-level permissions)
+
+**To configure the token:**
+1. Navigate to [Cloudflare API Tokens](https://dash.cloudflare.com/profile/api-tokens)
+2. Create a custom token or edit an existing one
+3. Add all required permissions listed above
+4. Set zone resources to include `pickyouragent.dev`
+5. Save the token and add it to GitHub secrets as `CLOUDFLARE_API_TOKEN`
+
+### Verification
+
+After deployment, verify headers using:
+```bash
+# Check HTML file headers
+curl -I https://pickyouragent.dev/
+
+# Check asset file headers
+curl -I https://pickyouragent.dev/styles/global.css
+```
+
+Expected headers:
+- HTML files: `Cache-Control: public, s-maxage=31536000, max-age=0, must-revalidate`
+- Asset files: `Cache-Control: public, s-maxage=31536000, max-age=31536000`
+
+### Notes
+
+- The `/*.html` pattern must come before the `/*` catch-all pattern in `_headers`
+- Cloudflare Pages automatically processes `_headers` files - no additional configuration needed
+- Changes to `_headers` require a new deployment to take effect
+- The `_headers` file format follows Cloudflare Pages specification
