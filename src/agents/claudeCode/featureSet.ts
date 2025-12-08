@@ -21,10 +21,9 @@ export const claudeCode = declareSchema(
       "explanation-in-natural-language": FeatureStatus.PartiallySupported,
       "step-by-step-view": FeatureStatus.NotSupported,
     },
-    tests: {
-      "test-generation": FeatureStatus.Supported,
-      "integrates-with-ci": FeatureStatus.Supported,
-      "editor-plugins-available": FeatureStatus.NotSupported,
+    tools: {
+      "search-engine": FeatureStatus.Supported,
+      "fetch-data": FeatureStatus.Supported,
     },
   }
 );

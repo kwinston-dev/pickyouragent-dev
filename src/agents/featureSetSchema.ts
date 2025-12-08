@@ -32,10 +32,9 @@ export const featureSetSchema = z.object({
     'auto-merge': subfeature('auto-merge'),
     'partial': subfeature('partial'),
   }),
-  tests: feature({name: 'tests'}, {
-    'test-generation': subfeature('test-generation'),
-    'integrates-with-ci': subfeature('integrates-with-ci'),
-    'editor-plugins-available': subfeature('editor-plugins-available'),
+  tools: feature({name: 'Tools'}, {
+    'search-engine': subfeature('search-engine'),
+    'fetch-data': subfeature('fetch-data'),
   }),
 });
 

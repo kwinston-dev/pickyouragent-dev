@@ -11,6 +11,7 @@
   --category-documentation: #8b5cf6;
   --category-reasoning: #f97316;
   --category-tests: #84cc16;
+  --category-tools: #06b6d4;
   
   /* Status badge colors */
   --badge-supported-bg: #dcfce7;
@@ -239,6 +240,10 @@ td {
 
 .category-row[data-category="tests"] {
   background-color: rgba(132, 204, 22, 0.06);
+}
+
+.category-row[data-category="tools"] {
+  background-color: rgba(6, 182, 212, 0.06);
 }
 
 /* Badge status indicators */

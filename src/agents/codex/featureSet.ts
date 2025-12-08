@@ -21,10 +21,9 @@ export const codex = declareSchema(
       "explanation-in-natural-language": FeatureStatus.Supported,
       "step-by-step-view": FeatureStatus.Supported,
     },
-    tests: {
-      "test-generation": FeatureStatus.NotSupported,
-      "integrates-with-ci": FeatureStatus.Supported,
-      "editor-plugins-available": FeatureStatus.Supported,
+    tools: {
+      "search-engine": FeatureStatus.Supported,
+      "fetch-data": FeatureStatus.NotSupported,
     },
   }
 );
