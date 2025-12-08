@@ -1,6 +1,7 @@
 ---
 import type { Agent } from '../agents/featureSetSchema';
 import { FeatureStatus } from '../agents/featureSetSchema';
+import Badge from './Badge.astro';
 
 interface Props {
   categoryKey: string;
@@ -15,44 +16,14 @@ interface Props {
 
 const { categoryKey, categoryName, features, agents, mainColor, secondaryColor, categorySlug, featureDisplayNames } = Astro.props;
 
-// Helper function to get status text
-function getStatusText(status: FeatureStatus | string): string {
-  const statusStr = String(status);
-  switch (statusStr) {
-    case 'supported':
-      return 'yes';
-    case 'partially-supported':
-      return 'partial';
-    case 'not-supported':
-      return 'no';
-    default:
-      return '';
-  }
-}
-
-// Helper function to get status class
-function getStatusClass(status: FeatureStatus | string): string {
-  const statusStr = String(status);
-  switch (statusStr) {
-    case 'supported':
-      return 'supported';
-    case 'partially-supported':
-      return 'partially-supported';
-    case 'not-supported':
-      return 'not-supported';
-    default:
-      return '';
-  }
-}
-
 // Helper function to aggregate feature statuses
-function aggregateStatus(statuses: (FeatureStatus | string)[]): FeatureStatus {
+function aggregateStatus(statuses: FeatureStatus[]): FeatureStatus {
   if (statuses.length === 0) {
     return FeatureStatus.NotSupported;
   }
   
-  const allSupported = statuses.every(s => String(s) === 'supported');
-  const allNotSupported = statuses.every(s => String(s) === 'not-supported');
+  const allSupported = statuses.every(s => s === FeatureStatus.Supported);
+  const allNotSupported = statuses.every(s => s === FeatureStatus.NotSupported);
   
   if (allSupported) {
     return FeatureStatus.Supported;
@@ -78,10 +49,7 @@ function aggregateStatus(statuses: (FeatureStatus | string)[]): FeatureStatus {
       const aggregatedStatus = aggregateStatus(statuses);
       return (
         <td>
-          <span class={`badge ${getStatusClass(aggregatedStatus)}`}>
-            <span class="badge-icon">{aggregatedStatus === FeatureStatus.NotSupported ? '✕' : '✓'}</span>
-            {getStatusText(aggregatedStatus)}
-          </span>
+          <Badge status={aggregatedStatus} />
         </td>
       );
     })}
@@ -97,10 +65,7 @@ function aggregateStatus(statuses: (FeatureStatus | string)[]): FeatureStatus {
         const status = agent.features[categoryKey as keyof typeof agent.features][featureKey as keyof typeof agent.features[typeof categoryKey]];
         return (
           <td>
-            <span class={`badge ${getStatusClass(status)}`}>
-              <span class="badge-icon">{status === 'not-supported' ? '✕' : '✓'}</span>
-              {getStatusText(status)}
-            </span>
+            <Badge status={status} />
           </td>
         );
       })}

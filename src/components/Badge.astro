@@ -1,0 +1,126 @@
+---
+import { FeatureStatus } from '../agents/featureSetSchema';
+
+interface Props {
+  status: FeatureStatus;
+}
+
+const { status } = Astro.props;
+
+// Helper function to get status text
+function getStatusText(status: FeatureStatus): string {
+  switch (status) {
+    case FeatureStatus.Supported:
+      return 'yes';
+    case FeatureStatus.PartiallySupported:
+      return 'partial';
+    case FeatureStatus.NotSupported:
+      return 'no';
+  }
+}
+
+// Helper function to get status class
+function getStatusClass(status: FeatureStatus): string {
+  switch (status) {
+    case FeatureStatus.Supported:
+      return 'supported';
+    case FeatureStatus.PartiallySupported:
+      return 'partially-supported';
+    case FeatureStatus.NotSupported:
+      return 'not-supported';
+  }
+}
+
+const statusClass = getStatusClass(status);
+const statusText = getStatusText(status);
+const icon = status === FeatureStatus.NotSupported ? '✕' : '✓';
+---
+
+<span class={`badge ${statusClass}`}>
+  <span class="badge-icon">{icon}</span>
+  {statusText}
+</span>
+
+<style>
+  /* Status badge colors */
+  :global(:root) {
+    --badge-supported-bg: #dcfce7;
+    --badge-supported-text: #15803d;
+    --badge-supported-icon: #22c55e;
+    
+    --badge-partial-bg: #fef3c7;
+    --badge-partial-text: #92400e;
+    --badge-partial-icon: #f59e0b;
+    
+    --badge-not-supported-bg: #fee2e2;
+    --badge-not-supported-text: #b91c1c;
+    --badge-not-supported-icon: #ef4444;
+  }
+
+  /* Badge status indicators */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+
+  .badge-icon {
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .badge.supported {
+    background-color: var(--badge-supported-bg);
+    color: var(--badge-supported-text);
+  }
+
+  .badge.supported .badge-icon {
+    color: var(--badge-supported-icon);
+  }
+
+  .badge.partially-supported {
+    background-color: var(--badge-partial-bg);
+    color: var(--badge-partial-text);
+  }
+
+  .badge.partially-supported .badge-icon {
+    color: var(--badge-partial-icon);
+  }
+
+  .badge.not-supported {
+    background-color: var(--badge-not-supported-bg);
+    color: var(--badge-not-supported-text);
+  }
+
+  .badge.not-supported .badge-icon {
+    color: var(--badge-not-supported-icon);
+  }
+
+  /* Smaller badges for feature rows */
+  :global(.feature-row) .badge {
+    padding: 0.2rem 0.55rem;
+    font-size: 0.72rem;
+  }
+
+  :global(.feature-row) .badge-icon {
+    font-size: 0.65rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .badge {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+    }
+
+    :global(.feature-row) .badge {
+      padding: 0.15rem 0.4rem;
+      font-size: 0.68rem;
+    }
+  }
+</style>
+

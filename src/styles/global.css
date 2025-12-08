@@ -9,19 +9,6 @@
   /* Feature colors - set per category via component props */
   --main-feature-color: #3b82f6;
   --secondary-feature-color: #60a5fa;
-  
-  /* Status badge colors */
-  --badge-supported-bg: #dcfce7;
-  --badge-supported-text: #15803d;
-  --badge-supported-icon: #22c55e;
-  
-  --badge-partial-bg: #fef3c7;
-  --badge-partial-text: #92400e;
-  --badge-partial-icon: #f59e0b;
-  
-  --badge-not-supported-bg: #fee2e2;
-  --badge-not-supported-text: #b91c1c;
-  --badge-not-supported-icon: #ef4444;
 }
 
 * {
@@ -102,59 +89,6 @@ main {
   padding: 0 2rem 4rem;
 }
 
-/* Badge status indicators */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.3rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 500;
-}
-
-.badge-icon {
-  font-size: 0.75rem;
-  font-weight: 700;
-}
-
-.badge.supported {
-  background-color: var(--badge-supported-bg);
-  color: var(--badge-supported-text);
-}
-
-.badge.supported .badge-icon {
-  color: var(--badge-supported-icon);
-}
-
-.badge.partially-supported {
-  background-color: var(--badge-partial-bg);
-  color: var(--badge-partial-text);
-}
-
-.badge.partially-supported .badge-icon {
-  color: var(--badge-partial-icon);
-}
-
-.badge.not-supported {
-  background-color: var(--badge-not-supported-bg);
-  color: var(--badge-not-supported-text);
-}
-
-.badge.not-supported .badge-icon {
-  color: var(--badge-not-supported-icon);
-}
-
-/* Smaller badges for feature rows */
-.feature-row .badge {
-  padding: 0.2rem 0.55rem;
-  font-size: 0.72rem;
-}
-
-.feature-row .badge-icon {
-  font-size: 0.65rem;
-}
-
 /* Center badges in agent columns */
 tbody td:not(.category-cell):not(.feature-cell) {
   text-align: center;
@@ -212,16 +146,6 @@ tbody td:not(.category-cell):not(.feature-cell) {
   
   main {
     padding: 0 1rem 3rem;
-  }
-  
-  .badge {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.75rem;
-  }
-  
-  .feature-row .badge {
-    padding: 0.15rem 0.4rem;
-    font-size: 0.68rem;
   }
 }
 
