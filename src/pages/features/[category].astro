@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import '../../styles/global.css';
+import { featuresRegistry, featureSetSchema } from '../../agents/featureSetSchema';
 
 export async function getStaticPaths() {
   const features = await getCollection('features');
@@ -13,16 +14,11 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await entry.render();
 
-// Category colors for styling
-const categoryColors: Record<string, string> = {
-  planMode: 'var(--category-planMode)',
-  documentation: 'var(--category-documentation)',
-  reasoning: 'var(--category-reasoning)',
-  tests: 'var(--category-tests)',
-  tools: 'var(--category-tools)',
-};
-
-const categoryColor = categoryColors[entry.data.categoryKey] || 'var(--category-planMode)';
+// Get category color from feature schema meta
+const categoryKey = entry.data.categoryKey as keyof typeof featureSetSchema.shape;
+const categorySchema = featureSetSchema.shape[categoryKey];
+const categoryMeta = categorySchema ? featuresRegistry.get(categorySchema) : null;
+const mainColor = categoryMeta?.mainColor || '#3b82f6';
 ---
 
 <html lang="en">
@@ -47,7 +43,7 @@ const categoryColor = categoryColors[entry.data.categoryKey] || 'var(--category-
     <main class="feature-page">
       <a href="/" class="back-link">← Back to comparison</a>
       
-      <article class="feature-content" style={`--category-accent: ${categoryColor}`}>
+      <article class="feature-content" style={`--main-feature-color: ${mainColor}`}>
         <Content />
       </article>
     </main>

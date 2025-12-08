@@ -1,0 +1,191 @@
+---
+import type { Agent } from '../agents/featureSetSchema';
+import { FeatureStatus } from '../agents/featureSetSchema';
+
+interface Props {
+  categoryKey: string;
+  categoryName: string;
+  features: string[];
+  agents: Agent[];
+  mainColor: string;
+  secondaryColor: string;
+  categorySlug: string;
+  featureDisplayNames: Record<string, string>;
+}
+
+const { categoryKey, categoryName, features, agents, mainColor, secondaryColor, categorySlug, featureDisplayNames } = Astro.props;
+
+// Helper function to get status text
+function getStatusText(status: FeatureStatus | string): string {
+  const statusStr = String(status);
+  switch (statusStr) {
+    case 'supported':
+      return 'yes';
+    case 'partially-supported':
+      return 'partial';
+    case 'not-supported':
+      return 'no';
+    default:
+      return '';
+  }
+}
+
+// Helper function to get status class
+function getStatusClass(status: FeatureStatus | string): string {
+  const statusStr = String(status);
+  switch (statusStr) {
+    case 'supported':
+      return 'supported';
+    case 'partially-supported':
+      return 'partially-supported';
+    case 'not-supported':
+      return 'not-supported';
+    default:
+      return '';
+  }
+}
+
+// Helper function to aggregate feature statuses
+function aggregateStatus(statuses: (FeatureStatus | string)[]): FeatureStatus {
+  if (statuses.length === 0) {
+    return FeatureStatus.NotSupported;
+  }
+  
+  const allSupported = statuses.every(s => String(s) === 'supported');
+  const allNotSupported = statuses.every(s => String(s) === 'not-supported');
+  
+  if (allSupported) {
+    return FeatureStatus.Supported;
+  } else if (allNotSupported) {
+    return FeatureStatus.NotSupported;
+  } else {
+    return FeatureStatus.PartiallySupported;
+  }
+}
+---
+
+<tr class="category-row" data-category={categoryKey} style={`--main-feature-color: ${mainColor}; --secondary-feature-color: ${secondaryColor}`}>
+    <td class="category-cell">
+      <a href={`/features/${categorySlug}`} class="category-name category-link">
+        {categoryName}
+      </a>
+    </td>
+    {agents.map((agent) => {
+      // Aggregate all feature statuses in this category
+      const statuses = features.map((featureKey) => {
+        return agent.features[categoryKey as keyof typeof agent.features][featureKey as keyof typeof agent.features[typeof categoryKey]];
+      });
+      const aggregatedStatus = aggregateStatus(statuses);
+      return (
+        <td>
+          <span class={`badge ${getStatusClass(aggregatedStatus)}`}>
+            <span class="badge-icon">{aggregatedStatus === FeatureStatus.NotSupported ? '✕' : '✓'}</span>
+            {getStatusText(aggregatedStatus)}
+          </span>
+        </td>
+      );
+    })}
+  </tr>
+  {features.map((featureKey) => (
+    <tr class="feature-row" data-category={categoryKey} style={`--main-feature-color: ${mainColor}; --secondary-feature-color: ${secondaryColor}`}>
+      <td class="feature-cell">
+        <a href={`/features/${categorySlug}#${featureKey}`} class="feature-name feature-link">
+          {featureDisplayNames[featureKey]}
+        </a>
+      </td>
+      {agents.map((agent) => {
+        const status = agent.features[categoryKey as keyof typeof agent.features][featureKey as keyof typeof agent.features[typeof categoryKey]];
+        return (
+          <td>
+            <span class={`badge ${getStatusClass(status)}`}>
+              <span class="badge-icon">{status === 'not-supported' ? '✕' : '✓'}</span>
+              {getStatusText(status)}
+            </span>
+          </td>
+        );
+      })}
+    </tr>
+  ))}
+
+<style>
+  .category-row {
+    border-top: 1px solid var(--border-light);
+    background-color: color-mix(in srgb, var(--main-feature-color) 6%, transparent);
+  }
+
+  .category-row .category-cell,
+  .feature-row .feature-cell {
+    position: relative;
+    padding-left: 1.75rem;
+  }
+
+  .category-row .category-cell::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    background-color: var(--main-feature-color);
+  }
+
+  .feature-row .feature-cell::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background-color: var(--main-feature-color);
+    opacity: 0.5;
+  }
+
+  /* Category row cells - larger padding */
+  .category-row td {
+    padding: 1.1rem 1.25rem;
+  }
+
+  .category-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+  }
+
+  /* Feature rows - compact subordinate items */
+  .feature-row td {
+    padding: 0.5rem 1.25rem;
+  }
+
+  .feature-name {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    padding-left: 1.25rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .category-row td {
+      padding: 0.9rem 0.75rem;
+    }
+    
+    .feature-row td {
+      padding: 0.4rem 0.75rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .feature-name {
+      padding-left: 0.75rem;
+    }
+    
+    .category-row td {
+      padding: 0.8rem 0.6rem;
+    }
+    
+    .feature-row td {
+      padding: 0.35rem 0.6rem;
+    }
+  }
+</style>
+
