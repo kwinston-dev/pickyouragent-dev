@@ -11,6 +11,6 @@ export default defineConfig({
   },
   build: {
     inlineStylesheets: 'never'
-  }
+  },
 });
 

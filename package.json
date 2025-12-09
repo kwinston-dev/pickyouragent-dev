@@ -11,7 +11,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/build-sw.js",
     "preview": "astro preview"
   },
   "dependencies": {
@@ -22,5 +22,12 @@
     "sharp": "^0.34.5",
     "typescript": "^5.9.3",
     "zod": "^4.1.13"
+  },
+  "devDependencies": {
+    "vite": "^7.2.7",
+    "workbox-expiration": "^7.4.0",
+    "workbox-routing": "^7.4.0",
+    "workbox-strategies": "^7.4.0",
+    "workbox-window": "^7.4.0"
   }
 }
