@@ -7,6 +7,9 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const root = resolve(__dirname, '..');
 
 await build({
+  define: {
+    'process.env.NODE_ENV': '"production"',
+  },
   build: {
     lib: {
       entry: resolve(root, 'src/sw.ts'),
@@ -15,6 +18,7 @@ await build({
     },
     outDir: resolve(root, 'dist'),
     emptyOutDir: false,
+    minify: 'esbuild',
     rollupOptions: {
       output: {
         entryFileNames: 'sw.js',
