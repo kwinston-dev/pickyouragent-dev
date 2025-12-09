@@ -12,5 +12,9 @@ export default defineConfig({
   build: {
     inlineStylesheets: 'never'
   },
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: 'hover',
+  },
 });
 
