@@ -1,10 +1,17 @@
 import { z } from 'zod';
 
+export enum SubFeatureStatus {
+  Supported = 'supported',
+  PartiallySupported = 'partially-supported',
+  NotSupported = 'not-supported',
+}
+
 export enum FeatureStatus {
   Supported = 'supported',
   PartiallySupported = 'partially-supported',
   NotSupported = 'not-supported',
 }
+
 type FeatureMeta = {
   name: string;
   mainColor: string;
@@ -20,13 +27,17 @@ export const featuresRegistry = z.registry<FeatureMeta>();
 export const subfeaturesRegistry = z.registry<SubfeatureMeta>();
 
 function subfeature(name: string) {
-  const subfeatureSchema = z.enum(FeatureStatus);
+  const subfeatureSchema = z.nativeEnum(SubFeatureStatus);
   subfeaturesRegistry.add(subfeatureSchema, {name});
   return subfeatureSchema;
 }
 
 function feature<T extends Record<string, z.ZodType>>(meta: FeatureMeta, subfeatures: T) {
-  const featureSchema = z.object(subfeatures);
+  const subfeaturesSchema = z.object(subfeatures);
+  const featureSchema = z.union([
+    z.nativeEnum(FeatureStatus),
+    subfeaturesSchema,
+  ]);
   featuresRegistry.add(featureSchema, meta);
   return featureSchema;
 }

@@ -1,39 +1,45 @@
 ---
-import { FeatureStatus } from '../agents/featureSetSchema';
+import { FeatureStatus, SubFeatureStatus } from '../agents/featureSetSchema';
 
 interface Props {
-  status: FeatureStatus;
+  status: FeatureStatus | SubFeatureStatus;
 }
 
 const { status } = Astro.props;
 
 // Helper function to get status text
-function getStatusText(status: FeatureStatus): string {
+function getStatusText(status: FeatureStatus | SubFeatureStatus): string {
   switch (status) {
     case FeatureStatus.Supported:
+    case SubFeatureStatus.Supported:
       return 'yes';
     case FeatureStatus.PartiallySupported:
+    case SubFeatureStatus.PartiallySupported:
       return 'partial';
     case FeatureStatus.NotSupported:
+    case SubFeatureStatus.NotSupported:
       return 'no';
   }
 }
 
 // Helper function to get status class
-function getStatusClass(status: FeatureStatus): string {
+function getStatusClass(status: FeatureStatus | SubFeatureStatus): string {
   switch (status) {
     case FeatureStatus.Supported:
+    case SubFeatureStatus.Supported:
       return 'supported';
     case FeatureStatus.PartiallySupported:
+    case SubFeatureStatus.PartiallySupported:
       return 'partially-supported';
     case FeatureStatus.NotSupported:
+    case SubFeatureStatus.NotSupported:
       return 'not-supported';
   }
 }
 
 const statusClass = getStatusClass(status);
 const statusText = getStatusText(status);
-const icon = status === FeatureStatus.NotSupported ? '✕' : '✓';
+const icon = (status === FeatureStatus.NotSupported || status === SubFeatureStatus.NotSupported) ? '✕' : '✓';
 ---
 
 <span class={`badge ${statusClass}`}>

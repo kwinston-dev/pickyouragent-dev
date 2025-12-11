@@ -1,4 +1,4 @@
-import { declareSchema, FeatureStatus } from "../featureSetSchema";
+import { declareSchema, SubFeatureStatus } from "../featureSetSchema";
 
 export const codex = declareSchema(
   {
@@ -7,23 +7,23 @@ export const codex = declareSchema(
   },
   {
     planMode: {
-      "dual-model": FeatureStatus.NotSupported,
+      "dual-model": SubFeatureStatus.NotSupported,
     },
     documentation: {
-      "filesystem": FeatureStatus.Supported,
-      "tree": FeatureStatus.NotSupported,
-      "multi-file": FeatureStatus.NotSupported,
-      "llms-txt": FeatureStatus.NotSupported,
-      "auto-merge": FeatureStatus.NotSupported,
-      "partial": FeatureStatus.NotSupported,
+      "filesystem": SubFeatureStatus.Supported,
+      "tree": SubFeatureStatus.NotSupported,
+      "multi-file": SubFeatureStatus.NotSupported,
+      "llms-txt": SubFeatureStatus.NotSupported,
+      "auto-merge": SubFeatureStatus.NotSupported,
+      "partial": SubFeatureStatus.NotSupported,
     },
     reasoning: {
-      "explanation-in-natural-language": FeatureStatus.Supported,
-      "step-by-step-view": FeatureStatus.Supported,
+      "explanation-in-natural-language": SubFeatureStatus.Supported,
+      "step-by-step-view": SubFeatureStatus.Supported,
     },
     tools: {
-      "search-engine": FeatureStatus.Supported,
-      "fetch-data": FeatureStatus.NotSupported,
+      "search-engine": SubFeatureStatus.Supported,
+      "fetch-data": SubFeatureStatus.NotSupported,
     },
   }
 );

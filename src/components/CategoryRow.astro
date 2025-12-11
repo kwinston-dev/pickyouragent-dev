@@ -1,6 +1,6 @@
 ---
 import type { Agent } from '../agents/featureSetSchema';
-import { FeatureStatus } from '../agents/featureSetSchema';
+import { FeatureStatus, SubFeatureStatus } from '../agents/featureSetSchema';
 import Badge from './Badge.astro';
 
 interface Props {
@@ -16,22 +16,48 @@ interface Props {
 
 const { categoryKey, categoryName, features, agents, mainColor, secondaryColor, categorySlug, featureDisplayNames } = Astro.props;
 
-// Helper function to aggregate feature statuses
-function aggregateStatus(statuses: FeatureStatus[]): FeatureStatus {
+// Type guard to check if a value is a FeatureStatus enum
+function isFeatureStatus(value: any): value is FeatureStatus {
+  return typeof value === 'string' && Object.values(FeatureStatus).includes(value as FeatureStatus);
+}
+
+// Helper function to aggregate subfeature statuses
+function aggregateStatus(statuses: SubFeatureStatus[]): FeatureStatus {
   if (statuses.length === 0) {
     return FeatureStatus.NotSupported;
   }
   
-  const allSupported = statuses.every(s => s === FeatureStatus.Supported);
-  const allNotSupported = statuses.every(s => s === FeatureStatus.NotSupported);
+  const allSupported = statuses.every(s => s === SubFeatureStatus.Supported);
+  const allNotSupported = statuses.every(s => s === SubFeatureStatus.NotSupported);
   
   if (allSupported) {
     return FeatureStatus.Supported;
   } else if (allNotSupported) {
-    return FeatureStatus.NotSupported;
+    // If all subfeatures are NotSupported but feature itself is not explicitly NotSupported,
+    // show PartiallySupported (not NotSupported)
+    return FeatureStatus.PartiallySupported;
   } else {
+    // Mix of supported and not-supported subfeatures
     return FeatureStatus.PartiallySupported;
   }
+}
+
+// Helper function to get subfeature statuses from a feature object
+function getSubfeatureStatuses(featureValue: any, featureKeys: string[]): SubFeatureStatus[] {
+  if (isFeatureStatus(featureValue)) {
+    return [];
+  }
+  const featureObj = featureValue as Record<string, SubFeatureStatus>;
+  return featureKeys.map((key) => featureObj[key]).filter((s): s is SubFeatureStatus => s !== undefined);
+}
+
+// Helper function to get a single subfeature status
+function getSubfeatureStatus(featureValue: any, featureKey: string): SubFeatureStatus {
+  if (isFeatureStatus(featureValue)) {
+    return SubFeatureStatus.NotSupported;
+  }
+  const featureObj = featureValue as Record<string, SubFeatureStatus>;
+  return featureObj[featureKey] || SubFeatureStatus.NotSupported;
 }
 ---
 
@@ -42,10 +68,20 @@ function aggregateStatus(statuses: FeatureStatus[]): FeatureStatus {
       </a>
     </td>
     {agents.map((agent) => {
-      // Aggregate all feature statuses in this category
-      const statuses = features.map((featureKey) => {
-        return agent.features[categoryKey as keyof typeof agent.features][featureKey as keyof typeof agent.features[typeof categoryKey]];
-      });
+      // Get the feature value for this category
+      const featureValue = agent.features[categoryKey as keyof typeof agent.features];
+      
+      // Check if the feature itself is a status (entire feature is NotSupported)
+      if (isFeatureStatus(featureValue)) {
+        return (
+          <td>
+            <Badge status={featureValue} />
+          </td>
+        );
+      }
+      
+      // Otherwise, aggregate all subfeature statuses in this category
+      const statuses = getSubfeatureStatuses(featureValue, features);
       const aggregatedStatus = aggregateStatus(statuses);
       return (
         <td>
@@ -62,7 +98,8 @@ function aggregateStatus(statuses: FeatureStatus[]): FeatureStatus {
         </a>
       </td>
       {agents.map((agent) => {
-        const status = agent.features[categoryKey as keyof typeof agent.features][featureKey as keyof typeof agent.features[typeof categoryKey]];
+        const featureValue = agent.features[categoryKey as keyof typeof agent.features];
+        const status = getSubfeatureStatus(featureValue, featureKey);
         return (
           <td>
             <Badge status={status} />

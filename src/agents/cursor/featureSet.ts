@@ -1,4 +1,4 @@
-import { declareSchema, FeatureStatus } from "../featureSetSchema";
+import { declareSchema, SubFeatureStatus } from "../featureSetSchema";
 
 export const cursor = declareSchema(
   {
@@ -7,20 +7,20 @@ export const cursor = declareSchema(
   },
   {
     planMode: {
-      "dual-model": FeatureStatus.NotSupported,
+      "dual-model": SubFeatureStatus.NotSupported,
     },
     documentation: {
-      "filesystem": FeatureStatus.Supported,
-      "tree": FeatureStatus.Supported,
-      "multi-file": FeatureStatus.Supported,
-      "llms-txt": FeatureStatus.Supported,
-      "auto-merge": FeatureStatus.NotSupported,
-      "partial": FeatureStatus.Supported,
+      "filesystem": SubFeatureStatus.Supported,
+      "tree": SubFeatureStatus.Supported,
+      "multi-file": SubFeatureStatus.Supported,
+      "llms-txt": SubFeatureStatus.Supported,
+      "auto-merge": SubFeatureStatus.NotSupported,
+      "partial": SubFeatureStatus.Supported,
     },
     tools: {
-      "search-engine": FeatureStatus.Supported,
+      "search-engine": SubFeatureStatus.Supported,
       // https://forum.cursor.com/t/agent-cant-web-search-properly/132658/17
-      "fetch-data": FeatureStatus.NotSupported,
+      "fetch-data": SubFeatureStatus.NotSupported,
     },
   }
 );

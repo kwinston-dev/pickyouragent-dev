@@ -35,7 +35,22 @@ for (const categoryKey of categoryOrder) {
     : formatDisplayName(categoryKey);
   
   // Extract feature names from each category
-  if (categorySchema instanceof z.ZodObject) {
+  // categorySchema is a union type (FeatureStatus | ZodObject), so we need to check
+  if (categorySchema instanceof z.ZodUnion) {
+    // Find the object option in the union
+    const objectOption = categorySchema.options.find(opt => opt instanceof z.ZodObject);
+    if (objectOption instanceof z.ZodObject) {
+      const featureKeys = Object.keys(objectOption.shape);
+      for (const featureKey of featureKeys) {
+        const featureSchema = (objectOption.shape as Record<string, z.ZodType>)[featureKey];
+        const subfeatureMeta = subfeaturesRegistry.get(featureSchema);
+        featureDisplayNames[featureKey] = subfeatureMeta?.name 
+          ? formatDisplayName(subfeatureMeta.name) 
+          : formatDisplayName(featureKey);
+      }
+    }
+  } else if (categorySchema instanceof z.ZodObject) {
+    // Fallback for direct ZodObject (shouldn't happen with new schema, but keep for safety)
     const featureKeys = Object.keys(categorySchema.shape);
     for (const featureKey of featureKeys) {
       const featureSchema = (categorySchema.shape as Record<string, z.ZodType>)[featureKey];

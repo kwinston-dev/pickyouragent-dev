@@ -1,4 +1,4 @@
-import { declareSchema, FeatureStatus } from "../featureSetSchema";
+import { declareSchema, SubFeatureStatus } from "../featureSetSchema";
 
 export const claudeCode = declareSchema(
   {
@@ -7,23 +7,23 @@ export const claudeCode = declareSchema(
   },
   {
     planMode: {
-      "dual-model": FeatureStatus.Supported,
+      "dual-model": SubFeatureStatus.Supported,
     },
     documentation: {
-      "filesystem": FeatureStatus.Supported,
-      "tree": FeatureStatus.Supported,
-      "multi-file": FeatureStatus.NotSupported,
-      "llms-txt": FeatureStatus.NotSupported,
-      "auto-merge": FeatureStatus.NotSupported,
-      "partial": FeatureStatus.NotSupported,
+      "filesystem": SubFeatureStatus.Supported,
+      "tree": SubFeatureStatus.Supported,
+      "multi-file": SubFeatureStatus.NotSupported,
+      "llms-txt": SubFeatureStatus.NotSupported,
+      "auto-merge": SubFeatureStatus.NotSupported,
+      "partial": SubFeatureStatus.NotSupported,
     },
     reasoning: {
-      "explanation-in-natural-language": FeatureStatus.PartiallySupported,
-      "step-by-step-view": FeatureStatus.NotSupported,
+      "explanation-in-natural-language": SubFeatureStatus.PartiallySupported,
+      "step-by-step-view": SubFeatureStatus.NotSupported,
     },
     tools: {
-      "search-engine": FeatureStatus.Supported,
-      "fetch-data": FeatureStatus.Supported,
+      "search-engine": SubFeatureStatus.Supported,
+      "fetch-data": SubFeatureStatus.Supported,
     },
   }
 );
