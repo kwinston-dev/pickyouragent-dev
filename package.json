@@ -4,7 +4,7 @@
   "type": "module",
   "author": "Andrew <xavescor@xavescor.dev> Vassilyev",
   "license": "MIT",
-  "packageManager": "pnpm@10.24.0",
+  "packageManager": "pnpm@10.26.0",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
