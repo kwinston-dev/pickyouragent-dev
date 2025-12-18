@@ -20,6 +20,20 @@ const { Content } = await entry.render();
 const parsedTable = new ParsedTable(allAgents);
 const feature = parsedTable.getFeature(entry.slug);
 const mainColor = feature?.mainColor || '#3b82f6';
+
+// Render all subfeature descriptions
+const subfeatureContents = feature && feature.getSubfeatures().length > 0
+  ? await Promise.all(
+      feature.getSubfeatures().map(async (subfeature) => {
+        const { Content: SubfeatureContent } = await subfeature.description.render();
+        return {
+          key: subfeature.key,
+          name: subfeature.name,
+          Content: SubfeatureContent,
+        };
+      })
+    )
+  : [];
 ---
 
 <html lang="en">
@@ -43,6 +57,17 @@ const mainColor = feature?.mainColor || '#3b82f6';
       
       <article class="feature-content" style={`--main-feature-color: ${mainColor}`}>
         <Content />
+        
+        {subfeatureContents.length > 0 && (
+          <>
+            {subfeatureContents.map((subfeature) => (
+              <section class="subfeature" id={subfeature.key}>
+                <h2>{subfeature.name}</h2>
+                <subfeature.Content />
+              </section>
+            ))}
+          </>
+        )}
       </article>
     </main>
   </body>

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import type { Agent } from './featureSetSchema';
+import type { CollectionEntry } from 'astro:content';
 import { 
   FeatureStatus, 
   SubFeatureStatus, 
@@ -85,17 +86,20 @@ export class ParsedSubfeature {
   readonly slug: string;
   readonly statusByAgent: Map<string, SubFeatureStatus>;
   readonly aggregatedStatus: FeatureStatus;
+  readonly description: CollectionEntry<'subfeatures'>;
 
   constructor(
     key: string,
     name: string,
     slug: string,
-    statusByAgent: Map<string, SubFeatureStatus>
+    statusByAgent: Map<string, SubFeatureStatus>,
+    description: CollectionEntry<'subfeatures'>
   ) {
     this.key = key;
     this.name = name;
     this.slug = slug;
     this.statusByAgent = statusByAgent;
+    this.description = description;
     
     // Aggregate status across all agents
     const statuses = Array.from(statusByAgent.values());
@@ -207,7 +211,14 @@ export class ParsedTable {
         if (!subfeatureSchema) continue;
 
         const subfeatureMeta = subfeaturesRegistry.get(subfeatureSchema);
-        const subfeatureName = subfeatureMeta?.name 
+        if (!subfeatureMeta) {
+          throw new Error(`Subfeature metadata not found for ${subfeatureKey}`);
+        }
+        if (!subfeatureMeta.description) {
+          throw new Error(`Subfeature description not found for ${subfeatureKey}`);
+        }
+        
+        const subfeatureName = subfeatureMeta.name 
           ? formatDisplayName(subfeatureMeta.name) 
           : formatDisplayName(subfeatureKey);
 
@@ -224,7 +235,8 @@ export class ParsedTable {
             subfeatureKey,
             subfeatureName,
             subfeatureKey, // Use key as slug for subfeatures
-            statusByAgent
+            statusByAgent,
+            subfeatureMeta.description
           )
         );
       }

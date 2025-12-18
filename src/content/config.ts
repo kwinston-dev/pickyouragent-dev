@@ -9,7 +9,16 @@ const featuresCollection = defineCollection({
   }),
 });
 
+const subfeaturesCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    featureName: z.string(),
+    subfeatureName: z.string(),
+  }),
+});
+
 export const collections = {
   features: featuresCollection,
+  subfeatures: subfeaturesCollection,
 };
 
