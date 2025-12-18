@@ -1,105 +1,40 @@
 ---
 import type { Agent } from '../agents/featureSetSchema';
-import { FeatureStatus, SubFeatureStatus } from '../agents/featureSetSchema';
+import { ParsedFeature } from '../agents/parsedTable';
 import Badge from './Badge.astro';
 
 interface Props {
-  categoryKey: string;
-  categoryName: string;
-  features: string[];
+  feature: ParsedFeature;
   agents: Agent[];
-  mainColor: string;
-  secondaryColor: string;
-  categorySlug: string;
-  featureDisplayNames: Record<string, string>;
 }
 
-const { categoryKey, categoryName, features, agents, mainColor, secondaryColor, categorySlug, featureDisplayNames } = Astro.props;
-
-// Type guard to check if a value is a FeatureStatus enum
-function isFeatureStatus(value: any): value is FeatureStatus {
-  return typeof value === 'string' && Object.values(FeatureStatus).includes(value as FeatureStatus);
-}
-
-// Helper function to aggregate subfeature statuses
-function aggregateStatus(statuses: SubFeatureStatus[]): FeatureStatus {
-  if (statuses.length === 0) {
-    return FeatureStatus.NotSupported;
-  }
-  
-  const allSupported = statuses.every(s => s === SubFeatureStatus.Supported);
-  const allNotSupported = statuses.every(s => s === SubFeatureStatus.NotSupported);
-  
-  if (allSupported) {
-    return FeatureStatus.Supported;
-  } else if (allNotSupported) {
-    // If all subfeatures are NotSupported but feature itself is not explicitly NotSupported,
-    // show PartiallySupported (not NotSupported)
-    return FeatureStatus.PartiallySupported;
-  } else {
-    // Mix of supported and not-supported subfeatures
-    return FeatureStatus.PartiallySupported;
-  }
-}
-
-// Helper function to get subfeature statuses from a feature object
-function getSubfeatureStatuses(featureValue: any, featureKeys: string[]): SubFeatureStatus[] {
-  if (isFeatureStatus(featureValue)) {
-    return [];
-  }
-  const featureObj = featureValue as Record<string, SubFeatureStatus>;
-  return featureKeys.map((key) => featureObj[key]).filter((s): s is SubFeatureStatus => s !== undefined);
-}
-
-// Helper function to get a single subfeature status
-function getSubfeatureStatus(featureValue: any, featureKey: string): SubFeatureStatus {
-  if (isFeatureStatus(featureValue)) {
-    return SubFeatureStatus.NotSupported;
-  }
-  const featureObj = featureValue as Record<string, SubFeatureStatus>;
-  return featureObj[featureKey] || SubFeatureStatus.NotSupported;
-}
+const { feature, agents } = Astro.props;
 ---
 
-<tr class="category-row" data-category={categoryKey} style={`--main-feature-color: ${mainColor}; --secondary-feature-color: ${secondaryColor}`}>
+<tr class="category-row" data-category={feature.key} style={`--main-feature-color: ${feature.mainColor}; --secondary-feature-color: ${feature.secondaryColor}`}>
     <td class="category-cell">
-      <a href={`/features/${categorySlug}`} class="category-name category-link">
-        {categoryName}
+      <a href={`/features/${feature.slug}`} class="category-name category-link">
+        {feature.name}
       </a>
     </td>
     {agents.map((agent) => {
-      // Get the feature value for this category
-      const featureValue = agent.features[categoryKey as keyof typeof agent.features];
-      
-      // Check if the feature itself is a status (entire feature is NotSupported)
-      if (isFeatureStatus(featureValue)) {
-        return (
-          <td>
-            <Badge status={featureValue} />
-          </td>
-        );
-      }
-      
-      // Otherwise, aggregate all subfeature statuses in this category
-      const statuses = getSubfeatureStatuses(featureValue, features);
-      const aggregatedStatus = aggregateStatus(statuses);
+      const status = feature.statusByAgent.get(agent.meta.id) || feature.aggregatedStatus;
       return (
         <td>
-          <Badge status={aggregatedStatus} />
+          <Badge status={status} />
         </td>
       );
     })}
   </tr>
-  {features.map((featureKey) => (
-    <tr class="feature-row" data-category={categoryKey} style={`--main-feature-color: ${mainColor}; --secondary-feature-color: ${secondaryColor}`}>
+  {feature.getSubfeatures().map((subfeature) => (
+    <tr class="feature-row" data-category={feature.key} style={`--main-feature-color: ${feature.mainColor}; --secondary-feature-color: ${feature.secondaryColor}`}>
       <td class="feature-cell">
-        <a href={`/features/${categorySlug}#${featureKey}`} class="feature-name feature-link">
-          {featureDisplayNames[featureKey]}
+        <a href={`/features/${feature.slug}#${subfeature.key}`} class="feature-name feature-link">
+          {subfeature.name}
         </a>
       </td>
       {agents.map((agent) => {
-        const featureValue = agent.features[categoryKey as keyof typeof agent.features];
-        const status = getSubfeatureStatus(featureValue, featureKey);
+        const status = subfeature.statusByAgent.get(agent.meta.id) || subfeature.aggregatedStatus;
         return (
           <td>
             <Badge status={status} />

@@ -1,7 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
 import '../../styles/global.css';
-import { featuresRegistry, featureSetSchema } from '../../agents/featureSetSchema';
+import { allAgents } from '../../agents/allAgents';
+import { ParsedTable } from '../../agents/parsedTable';
 import Head from '../../components/Head.astro';
 
 export async function getStaticPaths() {
@@ -15,11 +16,10 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await entry.render();
 
-// Get category color from feature schema meta
-const categoryKey = entry.data.categoryKey as keyof typeof featureSetSchema.shape;
-const categorySchema = featureSetSchema.shape[categoryKey];
-const categoryMeta = categorySchema ? featuresRegistry.get(categorySchema) : null;
-const mainColor = categoryMeta?.mainColor || '#3b82f6';
+// Get category color from parsed table
+const parsedTable = new ParsedTable(allAgents);
+const feature = parsedTable.getFeature(entry.slug);
+const mainColor = feature?.mainColor || '#3b82f6';
 ---
 
 <html lang="en">
