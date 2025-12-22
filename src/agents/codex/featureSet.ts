@@ -8,14 +8,15 @@ export const codex = declareSchema(
   {
     planMode: {
       "dual-model": SubFeatureStatus.NotSupported,
+      questions: SubFeatureStatus.NotSupported,
     },
     documentation: {
-      "filesystem": SubFeatureStatus.Supported,
-      "tree": SubFeatureStatus.NotSupported,
+      filesystem: SubFeatureStatus.Supported,
+      tree: SubFeatureStatus.NotSupported,
       "multi-file": SubFeatureStatus.NotSupported,
       "llms-txt": SubFeatureStatus.NotSupported,
       "auto-merge": SubFeatureStatus.NotSupported,
-      "partial": SubFeatureStatus.NotSupported,
+      partial: SubFeatureStatus.NotSupported,
     },
     reasoning: {
       "explanation-in-natural-language": SubFeatureStatus.Supported,
@@ -25,5 +26,5 @@ export const codex = declareSchema(
       "search-engine": SubFeatureStatus.Supported,
       "fetch-data": SubFeatureStatus.NotSupported,
     },
-  }
+  },
 );

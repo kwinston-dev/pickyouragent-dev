@@ -3,8 +3,4 @@ import { codex } from "./codex/featureSet";
 import { claudeCode } from "./claudeCode/featureSet";
 import { cursor } from "./cursor/featureSet";
 
-export const allAgents: Agent[] = [
-    codex,
-    claudeCode,
-    cursor,
-]
+export const allAgents: Agent[] = [cursor, codex, claudeCode];

@@ -8,14 +8,15 @@ export const claudeCode = declareSchema(
   {
     planMode: {
       "dual-model": SubFeatureStatus.Supported,
+      questions: SubFeatureStatus.NotSupported,
     },
     documentation: {
-      "filesystem": SubFeatureStatus.Supported,
-      "tree": SubFeatureStatus.Supported,
+      filesystem: SubFeatureStatus.Supported,
+      tree: SubFeatureStatus.Supported,
       "multi-file": SubFeatureStatus.NotSupported,
       "llms-txt": SubFeatureStatus.NotSupported,
       "auto-merge": SubFeatureStatus.NotSupported,
-      "partial": SubFeatureStatus.NotSupported,
+      partial: SubFeatureStatus.NotSupported,
     },
     reasoning: {
       "explanation-in-natural-language": SubFeatureStatus.PartiallySupported,
@@ -25,5 +26,5 @@ export const claudeCode = declareSchema(
       "search-engine": SubFeatureStatus.Supported,
       "fetch-data": SubFeatureStatus.Supported,
     },
-  }
+  },
 );

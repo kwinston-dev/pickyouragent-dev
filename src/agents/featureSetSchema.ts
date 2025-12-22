@@ -105,6 +105,7 @@ function feature<T extends Record<string, z.ZodType>>(meta: FeatureMeta, subfeat
 
 // Resolve all subfeature descriptions at module level
 const dualModelDesc = await resolveMd('content/planMode/dual-model/dual-model.md');
+const questionsDesc = await resolveMd('content/planMode/questions/questions.mdx');
 const filesystemDesc = await resolveMd('content/documentation/filesystem/filesystem.md');
 const treeDesc = await resolveMd('content/documentation/tree/tree.md');
 const multiFileDesc = await resolveMd('content/documentation/multi-file/multi-file.md');
@@ -124,6 +125,10 @@ export const featureSetSchema = z.object({
     'dual-model': subfeature({
       name: 'dual-model',
       description: dualModelDesc,
+    }),
+    'questions': subfeature({
+      name: 'questions',
+      description: questionsDesc,
     }),
   }),
   documentation: feature({
