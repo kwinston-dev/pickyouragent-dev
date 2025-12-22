@@ -17,7 +17,7 @@ export const claudeCode = declareSchema(
       "multi-file": SubFeatureStatus.NotSupported,
       "llms-txt": SubFeatureStatus.NotSupported,
       "auto-merge": SubFeatureStatus.NotSupported,
-      partial: SubFeatureStatus.NotSupported,
+      skills: SubFeatureStatus.NotVerified,
     },
     reasoning: {
       "explanation-in-natural-language": SubFeatureStatus.PartiallySupported,

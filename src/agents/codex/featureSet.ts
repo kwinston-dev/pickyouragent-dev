@@ -13,7 +13,7 @@ export const codex = declareSchema(
       "multi-file": SubFeatureStatus.NotSupported,
       "llms-txt": SubFeatureStatus.NotSupported,
       "auto-merge": SubFeatureStatus.NotSupported,
-      partial: SubFeatureStatus.NotSupported,
+      skills: SubFeatureStatus.NotVerified,
     },
     reasoning: {
       "explanation-in-natural-language": SubFeatureStatus.Supported,

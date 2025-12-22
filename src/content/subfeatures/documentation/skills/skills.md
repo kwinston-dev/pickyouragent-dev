@@ -1,6 +1,6 @@
 ---
 featureName: documentation
-subfeatureName: partial
+subfeatureName: skills
 ---
 
 Let the agent decide what part of you local docs should be included in the context.
@@ -18,7 +18,13 @@ root
 
 If you want only to tune the deployment process, you don't need to include the lint and test docs into the context.
 
+Read more about the standard: https://agentskills.io/home
+
 Only this agents supports this feature:
 
 - Cursor
 
+Not verified:
+
+- Codex
+- Claude code

@@ -17,7 +17,7 @@ export const cursor = declareSchema(
       "multi-file": SubFeatureStatus.Supported,
       "llms-txt": SubFeatureStatus.Supported,
       "auto-merge": SubFeatureStatus.NotSupported,
-      partial: SubFeatureStatus.Supported,
+      skills: SubFeatureStatus.Supported,
     },
     tools: {
       "search-engine": SubFeatureStatus.Supported,

@@ -114,7 +114,7 @@ const treeDesc = await resolveMd('content/documentation/tree/tree.md');
 const multiFileDesc = await resolveMd('content/documentation/multi-file/multi-file.md');
 const llmsTxtDesc = await resolveMd('content/documentation/llms-txt/llms-txt.md');
 const autoMergeDesc = await resolveMd('content/documentation/auto-merge/auto-merge.md');
-const partialDesc = await resolveMd('content/documentation/partial/partial.md');
+const skillsDesc = await resolveMd('content/documentation/skills/skills.md');
 const searchEngineDesc = await resolveMd('content/tools/search-engine/search-engine.md');
 const fetchDataDesc = await resolveMd('content/tools/fetch-data/fetch-data.md');
 
@@ -164,9 +164,9 @@ export const featureSetSchema = z.object({
       name: 'auto-merge',
       description: autoMergeDesc,
     }),
-    'partial': subfeature({
-      name: 'partial',
-      description: partialDesc,
+    'skills': subfeature({
+      name: 'Partial/Skills.md',
+      description: skillsDesc,
     }),
   }),
   tools: feature({
