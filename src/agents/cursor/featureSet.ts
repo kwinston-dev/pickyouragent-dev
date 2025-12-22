@@ -1,4 +1,4 @@
-import { declareSchema, SubFeatureStatus } from "../featureSetSchema";
+import { declareSchema, FeatureStatus, SubFeatureStatus } from "../featureSetSchema";
 
 export const cursor = declareSchema(
   {
@@ -26,5 +26,6 @@ export const cursor = declareSchema(
       "browser": SubFeatureStatus.PartiallySupported,
       "linters": SubFeatureStatus.PartiallySupported,
     },
+    commands: FeatureStatus.Supported,
   },
 );

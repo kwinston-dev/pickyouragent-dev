@@ -1,4 +1,4 @@
-import { declareSchema, SubFeatureStatus } from "../featureSetSchema";
+import { declareSchema, FeatureStatus, SubFeatureStatus } from "../featureSetSchema";
 
 export const claudeCode = declareSchema(
   {
@@ -29,5 +29,6 @@ export const claudeCode = declareSchema(
       "browser": SubFeatureStatus.NotVerified,
       "linters": SubFeatureStatus.NotVerified,
     },
+    commands: FeatureStatus.Supported,
   },
 );

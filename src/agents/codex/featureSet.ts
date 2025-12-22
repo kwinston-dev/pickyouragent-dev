@@ -25,5 +25,6 @@ export const codex = declareSchema(
       "browser": SubFeatureStatus.NotSupported,
       "linters": SubFeatureStatus.NotSupported,
     },
+    commands: FeatureStatus.Supported,
   },
 );

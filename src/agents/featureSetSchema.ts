@@ -194,6 +194,12 @@ export const featureSetSchema = z.object({
       description: lintersDesc,
     }),
   }),
+  commands: feature({
+    name: 'Commands',
+    mainColor: '#10b981',
+    secondaryColor: '#34d399',
+    slug: 'commands',
+  }, {}),
 });
 
 type AgentMeta = {
