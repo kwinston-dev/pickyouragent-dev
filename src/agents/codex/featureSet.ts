@@ -22,6 +22,7 @@ export const codex = declareSchema(
     tools: {
       "search-engine": SubFeatureStatus.Supported,
       "fetch-data": SubFeatureStatus.NotSupported,
+      "browser": SubFeatureStatus.NotSupported,
     },
   },
 );

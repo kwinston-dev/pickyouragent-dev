@@ -26,6 +26,7 @@ export const claudeCode = declareSchema(
     tools: {
       "search-engine": SubFeatureStatus.Supported,
       "fetch-data": SubFeatureStatus.Supported,
+      "browser": SubFeatureStatus.NotVerified,
     },
   },
 );
