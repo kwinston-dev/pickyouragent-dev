@@ -19,6 +19,9 @@ function getStatusText(status: FeatureStatus | SubFeatureStatus): string {
     case FeatureStatus.NotSupported:
     case SubFeatureStatus.NotSupported:
       return 'no';
+    case FeatureStatus.NotVerified:
+    case SubFeatureStatus.NotVerified:
+      return 'not verified yet';
   }
 }
 
@@ -34,12 +37,19 @@ function getStatusClass(status: FeatureStatus | SubFeatureStatus): string {
     case FeatureStatus.NotSupported:
     case SubFeatureStatus.NotSupported:
       return 'not-supported';
+    case FeatureStatus.NotVerified:
+    case SubFeatureStatus.NotVerified:
+      return 'not-verified';
   }
 }
 
 const statusClass = getStatusClass(status);
 const statusText = getStatusText(status);
-const icon = (status === FeatureStatus.NotSupported || status === SubFeatureStatus.NotSupported) ? '✕' : '✓';
+const icon = (status === FeatureStatus.NotSupported || status === SubFeatureStatus.NotSupported) 
+  ? '✕' 
+  : (status === FeatureStatus.NotVerified || status === SubFeatureStatus.NotVerified)
+  ? '?'
+  : '✓';
 ---
 
 <span class={`badge ${statusClass}`}>
@@ -61,6 +71,10 @@ const icon = (status === FeatureStatus.NotSupported || status === SubFeatureStat
     --badge-not-supported-bg: #fee2e2;
     --badge-not-supported-text: #b91c1c;
     --badge-not-supported-icon: #ef4444;
+    
+    --badge-not-verified-bg: #f3f4f6;
+    --badge-not-verified-text: #6b7280;
+    --badge-not-verified-icon: #9ca3af;
   }
 
   /* Badge status indicators */
@@ -104,6 +118,15 @@ const icon = (status === FeatureStatus.NotSupported || status === SubFeatureStat
 
   .badge.not-supported .badge-icon {
     color: var(--badge-not-supported-icon);
+  }
+
+  .badge.not-verified {
+    background-color: var(--badge-not-verified-bg);
+    color: var(--badge-not-verified-text);
+  }
+
+  .badge.not-verified .badge-icon {
+    color: var(--badge-not-verified-icon);
   }
 
   /* Smaller badges for feature rows */

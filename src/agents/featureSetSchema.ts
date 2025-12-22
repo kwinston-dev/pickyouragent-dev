@@ -6,12 +6,14 @@ export enum SubFeatureStatus {
   Supported = 'supported',
   PartiallySupported = 'partially-supported',
   NotSupported = 'not-supported',
+  NotVerified = 'not-verified',
 }
 
 export enum FeatureStatus {
   Supported = 'supported',
   PartiallySupported = 'partially-supported',
   NotSupported = 'not-supported',
+  NotVerified = 'not-verified',
 }
 
 type FeatureMeta = {

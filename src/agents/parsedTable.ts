@@ -30,9 +30,12 @@ function aggregateSubfeatureStatuses(statuses: SubFeatureStatus[]): FeatureStatu
   
   const allSupported = statuses.every(s => s === SubFeatureStatus.Supported);
   const allNotSupported = statuses.every(s => s === SubFeatureStatus.NotSupported);
+  const allNotVerified = statuses.every(s => s === SubFeatureStatus.NotVerified);
   
   if (allSupported) {
     return FeatureStatus.Supported;
+  } else if (allNotVerified) {
+    return FeatureStatus.NotVerified;
   } else if (allNotSupported) {
     // If all subfeatures are NotSupported but feature itself is not explicitly NotSupported,
     // show PartiallySupported (not NotSupported)
@@ -51,9 +54,12 @@ function aggregateFeatureStatuses(statuses: FeatureStatus[]): FeatureStatus {
   
   const allSupported = statuses.every(s => s === FeatureStatus.Supported);
   const allNotSupported = statuses.every(s => s === FeatureStatus.NotSupported);
+  const allNotVerified = statuses.every(s => s === FeatureStatus.NotVerified);
   
   if (allSupported) {
     return FeatureStatus.Supported;
+  } else if (allNotVerified) {
+    return FeatureStatus.NotVerified;
   } else if (allNotSupported) {
     return FeatureStatus.NotSupported;
   } else {
@@ -77,7 +83,7 @@ function getSubfeatureStatus(featureValue: any, featureKey: string): SubFeatureS
     return SubFeatureStatus.NotSupported;
   }
   const featureObj = featureValue as Record<string, SubFeatureStatus>;
-  return featureObj[featureKey] || SubFeatureStatus.NotSupported;
+  return featureObj[featureKey] || SubFeatureStatus.NotVerified;
 }
 
 export class ParsedSubfeature {
