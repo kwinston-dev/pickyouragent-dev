@@ -15,3 +15,4 @@ Codex: Not implemented
 
 Claude Code: Not implemented
 
+Kilo Code: Not implemented. You need to patch your system prompts to save the prompt into a file

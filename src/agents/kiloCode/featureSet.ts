@@ -7,9 +7,9 @@ export const kiloCode = declareSchema(
   },
   {
     planMode: {
-      "dual-model": SubFeatureStatus.NotVerified,
-      questions: SubFeatureStatus.NotVerified,
-      "plan-editing": SubFeatureStatus.NotVerified,
+      "dual-model": SubFeatureStatus.Supported,
+      questions: SubFeatureStatus.Supported,
+      "plan-editing": SubFeatureStatus.NotSupported,
     },
     documentation: {
       filesystem: SubFeatureStatus.NotVerified,
