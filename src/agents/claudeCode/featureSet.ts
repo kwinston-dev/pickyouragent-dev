@@ -8,21 +8,17 @@ export const claudeCode = declareSchema(
   {
     planMode: {
       "dual-model": SubFeatureStatus.Supported,
-      questions: SubFeatureStatus.NotVerified,
-      "plan-editing": SubFeatureStatus.NotVerified,
+      questions: SubFeatureStatus.NotSupported,
+      "plan-editing": SubFeatureStatus.NotSupported,
     },
     documentation: {
-      filesystem: SubFeatureStatus.Supported,
+      filesystem: SubFeatureStatus.NotSupported,
       tree: SubFeatureStatus.Supported,
       "multi-file": SubFeatureStatus.NotSupported,
       "llms-txt": SubFeatureStatus.NotSupported,
       "auto-merge": SubFeatureStatus.NotSupported,
       skills: SubFeatureStatus.NotVerified,
       "web-to-docs": SubFeatureStatus.NotSupported,
-    },
-    reasoning: {
-      "explanation-in-natural-language": SubFeatureStatus.PartiallySupported,
-      "step-by-step-view": SubFeatureStatus.NotSupported,
     },
     tools: {
       "search-engine": SubFeatureStatus.Supported,
@@ -31,6 +27,9 @@ export const claudeCode = declareSchema(
       "linters": SubFeatureStatus.NotVerified,
     },
     commands: FeatureStatus.Supported,
-    cliCalling: FeatureStatus.NotVerified,
+    cliCalling: {
+      "infinite-tasks-timeout": SubFeatureStatus.NotVerified,
+      "processes-explorer": SubFeatureStatus.NotVerified,
+    },
   },
 );

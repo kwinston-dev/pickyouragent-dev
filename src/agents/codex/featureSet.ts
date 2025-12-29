@@ -6,7 +6,11 @@ export const codex = declareSchema(
     name: "Codex",
   },
   {
-    planMode: FeatureStatus.NotSupported,
+    planMode: {
+      "dual-model": SubFeatureStatus.NotSupported,
+      questions: SubFeatureStatus.NotSupported,
+      "plan-editing": SubFeatureStatus.NotSupported,
+    },
     documentation: {
       filesystem: SubFeatureStatus.Supported,
       tree: SubFeatureStatus.NotSupported,
@@ -16,10 +20,6 @@ export const codex = declareSchema(
       skills: SubFeatureStatus.NotVerified,
       "web-to-docs": SubFeatureStatus.NotSupported,
     },
-    reasoning: {
-      "explanation-in-natural-language": SubFeatureStatus.Supported,
-      "step-by-step-view": SubFeatureStatus.Supported,
-    },
     tools: {
       "search-engine": SubFeatureStatus.Supported,
       "fetch-data": SubFeatureStatus.NotSupported,
@@ -27,6 +27,9 @@ export const codex = declareSchema(
       "linters": SubFeatureStatus.NotSupported,
     },
     commands: FeatureStatus.Supported,
-    cliCalling: FeatureStatus.NotVerified,
+    cliCalling: {
+      "infinite-tasks-timeout": SubFeatureStatus.NotVerified,
+      "processes-explorer": SubFeatureStatus.NotVerified,
+    },
   },
 );

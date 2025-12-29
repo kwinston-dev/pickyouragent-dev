@@ -28,6 +28,9 @@ export const cursor = declareSchema(
       "linters": SubFeatureStatus.PartiallySupported,
     },
     commands: FeatureStatus.Supported,
-    cliCalling: FeatureStatus.NotVerified,
+    cliCalling: {
+      "infinite-tasks-timeout": SubFeatureStatus.NotSupported,
+      "processes-explorer": SubFeatureStatus.NotSupported,
+    },
   },
 );
