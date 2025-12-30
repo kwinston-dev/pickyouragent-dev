@@ -91,7 +91,7 @@ const llmsTxtDesc = await resolveMd('subfeatures/documentation/llms-txt');
 const autoMergeDesc = await resolveMd('subfeatures/documentation/auto-merge');
 const skillsDesc = await resolveMd('subfeatures/documentation/skills');
 const webToDocsDesc = await resolveMd('subfeatures/documentation/web-to-docs');
-const searchEngineDesc = await resolveMd('subfeatures/tools/search-engine');
+const webSearchEngineDesc = await resolveMd('subfeatures/tools/web-search-engine');
 const fetchDataDesc = await resolveMd('subfeatures/tools/fetch-data');
 const browserDesc = await resolveMd('subfeatures/tools/browser');
 const lintersDesc = await resolveMd('subfeatures/tools/linters');
@@ -159,9 +159,9 @@ export const featureSetSchema = z.object({
     secondaryColor: '#22d3ee',
     slug: 'tools',
   }, {
-    'search-engine': subfeature({
-      name: 'search-engine',
-      description: searchEngineDesc,
+    'web-search-engine': subfeature({
+      name: 'web-search-engine',
+      description: webSearchEngineDesc,
     }),
     'fetch-data': subfeature({
       name: 'fetch-data',

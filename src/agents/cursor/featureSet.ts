@@ -21,7 +21,7 @@ export const cursor = declareSchema(
       "web-to-docs": SubFeatureStatus.Supported,
     },
     tools: {
-      "search-engine": SubFeatureStatus.Supported,
+      "web-search-engine": SubFeatureStatus.Supported,
       // https://forum.cursor.com/t/agent-cant-web-search-properly/132658/17
       "fetch-data": SubFeatureStatus.NotSupported,
       "browser": SubFeatureStatus.PartiallySupported,

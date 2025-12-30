@@ -21,7 +21,7 @@ export const kiloCode = declareSchema(
       "web-to-docs": SubFeatureStatus.NotVerified,
     },
     tools: {
-      "search-engine": SubFeatureStatus.NotVerified,
+      "web-search-engine": SubFeatureStatus.NotSupported,
       "fetch-data": SubFeatureStatus.NotVerified,
       browser: SubFeatureStatus.NotVerified,
       linters: SubFeatureStatus.NotVerified,

@@ -21,7 +21,7 @@ export const claudeCode = declareSchema(
       "web-to-docs": SubFeatureStatus.NotSupported,
     },
     tools: {
-      "search-engine": SubFeatureStatus.Supported,
+      "web-search-engine": SubFeatureStatus.Supported,
       "fetch-data": SubFeatureStatus.Supported,
       "browser": SubFeatureStatus.NotVerified,
       "linters": SubFeatureStatus.NotVerified,

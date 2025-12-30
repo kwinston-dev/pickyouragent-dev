@@ -21,7 +21,7 @@ export const codex = declareSchema(
       "web-to-docs": SubFeatureStatus.NotSupported,
     },
     tools: {
-      "search-engine": SubFeatureStatus.Supported,
+      "web-search-engine": SubFeatureStatus.Supported,
       "fetch-data": SubFeatureStatus.NotSupported,
       "browser": SubFeatureStatus.NotSupported,
       "linters": SubFeatureStatus.NotSupported,
