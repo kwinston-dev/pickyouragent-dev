@@ -13,10 +13,10 @@ The agent allows you to hide/show the models from the model list.
 
 **Not supported agents:**
 
-- None
-
-**Not verified yet:**
-
 - Claude Code
 - Codex
 - Kilo Code
+
+**Not verified yet:**
+
+- None
