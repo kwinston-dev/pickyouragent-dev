@@ -26,7 +26,7 @@ export const kiloCode = declareSchema(
       browser: SubFeatureStatus.NotSupported,
       linters: SubFeatureStatus.NotSupported,
     },
-    commands: FeatureStatus.NotVerified,
+    commands: FeatureStatus.Supported,
     cliCalling: {
       "infinite-tasks-timeout": SubFeatureStatus.NotSupported,
       "processes-explorer": SubFeatureStatus.NotSupported,
