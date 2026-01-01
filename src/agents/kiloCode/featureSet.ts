@@ -10,6 +10,7 @@ export const kiloCode = declareSchema(
       "dual-model": SubFeatureStatus.Supported,
       questions: SubFeatureStatus.Supported,
       "plan-editing": SubFeatureStatus.NotSupported,
+      "orchestrator-mode": SubFeatureStatus.Supported,
     },
     documentation: {
       filesystem: SubFeatureStatus.Supported,

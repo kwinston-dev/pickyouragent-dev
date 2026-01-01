@@ -10,6 +10,7 @@ export const claudeCode = declareSchema(
       "dual-model": SubFeatureStatus.Supported,
       questions: SubFeatureStatus.NotVerified,
       "plan-editing": SubFeatureStatus.NotVerified,
+      "orchestrator-mode": SubFeatureStatus.NotVerified,
     },
     documentation: {
       filesystem: SubFeatureStatus.Supported,

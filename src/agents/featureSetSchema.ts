@@ -1,19 +1,19 @@
-import { z } from 'zod';
-import { getEntry, getCollection } from 'astro:content';
-import type { CollectionEntry } from 'astro:content';
+import { z } from "zod";
+import { getEntry, getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 
 export enum SubFeatureStatus {
-  Supported = 'supported',
-  PartiallySupported = 'partially-supported',
-  NotSupported = 'not-supported',
-  NotVerified = 'not-verified',
+  Supported = "supported",
+  PartiallySupported = "partially-supported",
+  NotSupported = "not-supported",
+  NotVerified = "not-verified",
 }
 
 export enum FeatureStatus {
-  Supported = 'supported',
-  PartiallySupported = 'partially-supported',
-  NotSupported = 'not-supported',
-  NotVerified = 'not-verified',
+  Supported = "supported",
+  PartiallySupported = "partially-supported",
+  NotSupported = "not-supported",
+  NotVerified = "not-verified",
 }
 
 type FeatureMeta = {
@@ -21,12 +21,12 @@ type FeatureMeta = {
   mainColor: string;
   secondaryColor: string;
   slug?: string;
-}
+};
 
 type SubfeatureMeta = {
   name: string;
-  description: CollectionEntry<'subfeatures'>;
-}
+  description: CollectionEntry<"subfeatures">;
+};
 
 export const featuresRegistry = z.registry<FeatureMeta>();
 export const subfeaturesRegistry = z.registry<SubfeatureMeta>();
@@ -38,28 +38,41 @@ export const subfeaturesRegistry = z.registry<SubfeatureMeta>();
  *
  * Note: This function must be called at the top level with await for Astro's static analysis.
  */
-export async function resolveSubfeature(id: string): Promise<CollectionEntry<'subfeatures'>> {
+export async function resolveSubfeature(
+  id: string,
+): Promise<CollectionEntry<"subfeatures">> {
   // Use getCollection and find by ID to ensure entries are processed the same way
   // as they were with the old implementation
-  const allEntries = await getCollection('subfeatures');
-  const entry = allEntries.find(e => e.id === id);
-  
+  const allEntries = await getCollection("subfeatures");
+  const entry = allEntries.find((e) => e.id === id);
+
   if (!entry) {
-    const availableIds = allEntries.map(e => e.id).join('\n  ');
-    throw new Error(`Subfeature entry not found: ${id}\n\nAvailable IDs:\n  ${availableIds}`);
+    const availableIds = allEntries.map((e) => e.id).join("\n  ");
+    throw new Error(
+      `Subfeature entry not found: ${id}\n\nAvailable IDs:\n  ${availableIds}`,
+    );
   }
-  
+
   return entry;
 }
 
-function subfeature(config: { name: string; description: CollectionEntry<'subfeatures'> }) {
+function subfeature(config: {
+  name: string;
+  description: CollectionEntry<"subfeatures">;
+}) {
   const subfeatureSchema = z.enum(SubFeatureStatus);
   // Type assertion to work around Astro version compatibility issue with render() method signature
-  subfeaturesRegistry.add(subfeatureSchema, { name: config.name, description: config.description as any });
+  subfeaturesRegistry.add(subfeatureSchema, {
+    name: config.name,
+    description: config.description as any,
+  });
   return subfeatureSchema;
 }
 
-function feature<T extends Record<string, z.ZodType>>(meta: FeatureMeta, subfeatures: T) {
+function feature<T extends Record<string, z.ZodType>>(
+  meta: FeatureMeta,
+  subfeatures: T,
+) {
   const subfeaturesSchema = z.object(subfeatures);
   const featureSchema = z.union([
     z.nativeEnum(FeatureStatus),
@@ -69,146 +82,192 @@ function feature<T extends Record<string, z.ZodType>>(meta: FeatureMeta, subfeat
   return featureSchema;
 }
 
-const dualModelDesc = await resolveSubfeature('planmode/dual-model/dual-model');
-const questionsDesc = await resolveSubfeature('planmode/questions/questions');
-const planEditingDesc = await resolveSubfeature('planmode/plan-editing/plan-editing');
-const filesystemDesc = await resolveSubfeature('documentation/filesystem/filesystem');
-const treeDesc = await resolveSubfeature('documentation/tree/tree');
-const multiFileDesc = await resolveSubfeature('documentation/multi-file/multi-file');
-const llmsTxtDesc = await resolveSubfeature('documentation/llms-txt/llms-txt');
-const autoMergeDesc = await resolveSubfeature('documentation/auto-merge/auto-merge');
-const skillsDesc = await resolveSubfeature('documentation/skills/skills');
-const webToDocsDesc = await resolveSubfeature('documentation/web-to-docs/web-to-docs');
-const webSearchEngineDesc = await resolveSubfeature('tools/web-search-engine/web-search-engine');
-const fetchDataDesc = await resolveSubfeature('tools/fetch-data/fetch-data');
-const browserDesc = await resolveSubfeature('tools/browser/browser');
-const lintersDesc = await resolveSubfeature('tools/linters/linters');
-const cliCallingInfiniteTasksTimeoutDesc = await resolveSubfeature('clicalling/infinite-tasks-timeout/infinite-tasks-timeout');
-const cliCallingProcessesExplorerDesc = await resolveSubfeature('clicalling/processes-explorer/processes-explorer');
-const modelManagementFilteringDesc = await resolveSubfeature('modelmanagement/filtering/filtering');
+const dualModelDesc = await resolveSubfeature("planmode/dual-model/dual-model");
+const questionsDesc = await resolveSubfeature("planmode/questions/questions");
+const planEditingDesc = await resolveSubfeature(
+  "planmode/plan-editing/plan-editing",
+);
+const orchestratorModeDesc = await resolveSubfeature(
+  "planmode/orchestrator-mode/orchestrator-mode",
+);
+const filesystemDesc = await resolveSubfeature(
+  "documentation/filesystem/filesystem",
+);
+const treeDesc = await resolveSubfeature("documentation/tree/tree");
+const multiFileDesc = await resolveSubfeature(
+  "documentation/multi-file/multi-file",
+);
+const llmsTxtDesc = await resolveSubfeature("documentation/llms-txt/llms-txt");
+const autoMergeDesc = await resolveSubfeature(
+  "documentation/auto-merge/auto-merge",
+);
+const skillsDesc = await resolveSubfeature("documentation/skills/skills");
+const webToDocsDesc = await resolveSubfeature(
+  "documentation/web-to-docs/web-to-docs",
+);
+const webSearchEngineDesc = await resolveSubfeature(
+  "tools/web-search-engine/web-search-engine",
+);
+const fetchDataDesc = await resolveSubfeature("tools/fetch-data/fetch-data");
+const browserDesc = await resolveSubfeature("tools/browser/browser");
+const lintersDesc = await resolveSubfeature("tools/linters/linters");
+const cliCallingInfiniteTasksTimeoutDesc = await resolveSubfeature(
+  "clicalling/infinite-tasks-timeout/infinite-tasks-timeout",
+);
+const cliCallingProcessesExplorerDesc = await resolveSubfeature(
+  "clicalling/processes-explorer/processes-explorer",
+);
+const modelManagementFilteringDesc = await resolveSubfeature(
+  "modelmanagement/filtering/filtering",
+);
 
 export const featureSetSchema = z.object({
-  planMode: feature({
-    name: 'Plan Mode',
-    mainColor: '#3b82f6',
-    secondaryColor: '#60a5fa',
-    slug: 'planmode',
-  }, {
-    'dual-model': subfeature({
-      name: 'dual-model',
-      description: dualModelDesc,
-    }),
-    'questions': subfeature({
-      name: 'questions',
-      description: questionsDesc,
-    }),
-    'plan-editing': subfeature({
-      name: 'plan-editing',
-      description: planEditingDesc,
-    }),
-  }),
-  documentation: feature({
-    name: 'Documentation',
-    mainColor: '#8b5cf6',
-    secondaryColor: '#a78bfa',
-    slug: 'documentation',
-  }, {
-    'filesystem': subfeature({
-      name: 'filesystem-documentation',
-      description: filesystemDesc,
-    }),
-    'tree': subfeature({
-      name: 'hierarchical-tree',
-      description: treeDesc,
-    }),
-    'multi-file': subfeature({
-      name: 'multi-file',
-      description: multiFileDesc,
-    }),
-    'llms-txt': subfeature({
-      name: 'llms-txt',
-      description: llmsTxtDesc,
-    }),
-    'auto-merge': subfeature({
-      name: 'auto-merge',
-      description: autoMergeDesc,
-    }),
-    'skills': subfeature({
-      name: 'Partial/Skills.md',
-      description: skillsDesc,
-    }),
-    'web-to-docs': subfeature({
-      name: 'web-to-docs',
-      description: webToDocsDesc,
-    }),
-  }),
-  tools: feature({
-    name: 'Tools',
-    mainColor: '#06b6d4',
-    secondaryColor: '#22d3ee',
-    slug: 'tools',
-  }, {
-    'web-search-engine': subfeature({
-      name: 'web-search-engine',
-      description: webSearchEngineDesc,
-    }),
-    'fetch-data': subfeature({
-      name: 'fetch-data',
-      description: fetchDataDesc,
-    }),
-    'browser': subfeature({
-      name: 'browser',
-      description: browserDesc,
-    }),
-    'linters': subfeature({
-      name: 'linters',
-      description: lintersDesc,
-    }),
-  }),
-  commands: feature({
-    name: 'Commands',
-    mainColor: '#10b981',
-    secondaryColor: '#34d399',
-    slug: 'commands',
-  }, {}),
-  cliCalling: feature({
-    name: 'CLI Calling',
-    mainColor: '#f97316',
-    secondaryColor: '#fb923c',
-    slug: 'cli-calling',
-  }, {
-    'infinite-tasks-timeout': subfeature({
-      name: 'infinite-tasks-timeout',
-      description: cliCallingInfiniteTasksTimeoutDesc,
-    }),
-    'processes-explorer': subfeature({
-      name: 'processes-explorer',
-      description: cliCallingProcessesExplorerDesc,
-    }),
-  }),
-  modelManagement: feature({
-    name: 'Model management',
-    mainColor: '#ec4899',
-    secondaryColor: '#f472b6',
-    slug: 'model-management',
-  }, {
-    'filtering': subfeature({
-      name: 'filtering',
-      description: modelManagementFilteringDesc,
-    }),
-  }),
+  planMode: feature(
+    {
+      name: "Plan Mode",
+      mainColor: "#3b82f6",
+      secondaryColor: "#60a5fa",
+      slug: "planmode",
+    },
+    {
+      "dual-model": subfeature({
+        name: "dual-model",
+        description: dualModelDesc,
+      }),
+      questions: subfeature({
+        name: "questions",
+        description: questionsDesc,
+      }),
+      "plan-editing": subfeature({
+        name: "plan-editing",
+        description: planEditingDesc,
+      }),
+      "orchestrator-mode": subfeature({
+        name: "orchestrator-mode",
+        description: orchestratorModeDesc,
+      }),
+    },
+  ),
+  documentation: feature(
+    {
+      name: "Documentation",
+      mainColor: "#8b5cf6",
+      secondaryColor: "#a78bfa",
+      slug: "documentation",
+    },
+    {
+      filesystem: subfeature({
+        name: "filesystem-documentation",
+        description: filesystemDesc,
+      }),
+      tree: subfeature({
+        name: "hierarchical-tree",
+        description: treeDesc,
+      }),
+      "multi-file": subfeature({
+        name: "multi-file",
+        description: multiFileDesc,
+      }),
+      "llms-txt": subfeature({
+        name: "llms-txt",
+        description: llmsTxtDesc,
+      }),
+      "auto-merge": subfeature({
+        name: "auto-merge",
+        description: autoMergeDesc,
+      }),
+      skills: subfeature({
+        name: "Partial/Skills.md",
+        description: skillsDesc,
+      }),
+      "web-to-docs": subfeature({
+        name: "web-to-docs",
+        description: webToDocsDesc,
+      }),
+    },
+  ),
+  tools: feature(
+    {
+      name: "Tools",
+      mainColor: "#06b6d4",
+      secondaryColor: "#22d3ee",
+      slug: "tools",
+    },
+    {
+      "web-search-engine": subfeature({
+        name: "web-search-engine",
+        description: webSearchEngineDesc,
+      }),
+      "fetch-data": subfeature({
+        name: "fetch-data",
+        description: fetchDataDesc,
+      }),
+      browser: subfeature({
+        name: "browser",
+        description: browserDesc,
+      }),
+      linters: subfeature({
+        name: "linters",
+        description: lintersDesc,
+      }),
+    },
+  ),
+  commands: feature(
+    {
+      name: "Commands",
+      mainColor: "#10b981",
+      secondaryColor: "#34d399",
+      slug: "commands",
+    },
+    {},
+  ),
+  cliCalling: feature(
+    {
+      name: "CLI Calling",
+      mainColor: "#f97316",
+      secondaryColor: "#fb923c",
+      slug: "cli-calling",
+    },
+    {
+      "infinite-tasks-timeout": subfeature({
+        name: "infinite-tasks-timeout",
+        description: cliCallingInfiniteTasksTimeoutDesc,
+      }),
+      "processes-explorer": subfeature({
+        name: "processes-explorer",
+        description: cliCallingProcessesExplorerDesc,
+      }),
+    },
+  ),
+  modelManagement: feature(
+    {
+      name: "Model management",
+      mainColor: "#ec4899",
+      secondaryColor: "#f472b6",
+      slug: "model-management",
+    },
+    {
+      filtering: subfeature({
+        name: "filtering",
+        description: modelManagementFilteringDesc,
+      }),
+    },
+  ),
 });
 
 type AgentMeta = {
   id: string;
   name: string;
-}
-export const agentRegistry = z.registry<AgentMeta>()
-export function declareSchema<T extends z.infer<typeof featureSetSchema>>(meta: AgentMeta, features: T) {
+};
+export const agentRegistry = z.registry<AgentMeta>();
+export function declareSchema<T extends z.infer<typeof featureSetSchema>>(
+  meta: AgentMeta,
+  features: T,
+) {
   return {
     meta,
     features: featureSetSchema.parse(features),
-  }
+  };
 }
 
 export type Agent = ReturnType<typeof declareSchema>;
