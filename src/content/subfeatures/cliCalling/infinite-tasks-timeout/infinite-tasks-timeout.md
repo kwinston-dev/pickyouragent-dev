@@ -21,8 +21,8 @@ None
 
 - Cursor
 - Kilo Code
+- Codex
 
 **Not verified yet:**
 
 - Claude Code
-- Codex

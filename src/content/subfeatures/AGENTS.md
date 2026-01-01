@@ -64,6 +64,19 @@ Optionally, you can add additional information in parentheses to provide context
 - Another Agent (specific implementation notes)
 ```
 
+**Documentation Links for Supported/Partially Supported Agents:**
+
+When listing agents as "Supported" or "Partially Supported", provide documentation links in parentheses where possible. This helps users verify the feature and find more information.
+
+```markdown
+**Supported agents:**
+
+- Agent Name (https://example.com/docs/feature)
+- Another Agent (https://another.com/docs/feature)
+```
+
+**Note:** Only add documentation links for supported or partially supported features. Do not add links for unsupported or not verified features.
+
 ### 4. Unsupported Agents List
 
 A list of agents that do not support this subfeature. These agents either lack the functionality or have known incompatibilities.
@@ -178,6 +191,7 @@ This command will run the development server but automatically stop after captur
 5. **Keep lists in sync** - When updating agent support status, always update both the markdown file AND the corresponding `featureSet.ts` files. See Critical Requirements section below for details
 6. **Match directory names** - Ensure `subfeatureName` in frontmatter matches the directory name exactly
 7. **Add optional agent-specific details** - Optionally include additional information in parentheses for each agent to provide context about their specific implementation, limitations, or support details. This is optional but can be helpful for clarity
+8. **Provide documentation links** - For supported or partially supported agents, include documentation URLs in parentheses where possible. Only add links for supported/partially supported features, not for unsupported or not verified features
 
 ## Critical Requirements
 

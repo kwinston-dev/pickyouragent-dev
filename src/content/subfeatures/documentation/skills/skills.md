@@ -24,6 +24,7 @@ Read more about the standard: https://agentskills.io/home
 
 - Cursor
 - Kilo Code (https://kilo.ai/docs/features/skills)
+- Codex (https://developers.openai.com/codex/skills)
 
 **Not supported agents:**
 
@@ -32,4 +33,3 @@ None
 **Not verified yet:**
 
 - Claude Code
-- Codex

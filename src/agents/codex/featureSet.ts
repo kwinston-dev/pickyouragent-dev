@@ -1,4 +1,8 @@
-import { declareSchema, FeatureStatus, SubFeatureStatus } from "../featureSetSchema";
+import {
+  declareSchema,
+  FeatureStatus,
+  SubFeatureStatus,
+} from "../featureSetSchema";
 
 export const codex = declareSchema(
   {
@@ -13,19 +17,19 @@ export const codex = declareSchema(
       "multi-file": SubFeatureStatus.NotSupported,
       "llms-txt": SubFeatureStatus.NotSupported,
       "auto-merge": SubFeatureStatus.NotSupported,
-      skills: SubFeatureStatus.NotVerified,
+      skills: SubFeatureStatus.Supported,
       "web-to-docs": SubFeatureStatus.NotSupported,
     },
     tools: {
       "web-search-engine": SubFeatureStatus.Supported,
       "fetch-data": SubFeatureStatus.NotSupported,
-      "browser": SubFeatureStatus.NotSupported,
-      "linters": SubFeatureStatus.NotSupported,
+      browser: SubFeatureStatus.NotSupported,
+      linters: SubFeatureStatus.NotSupported,
     },
     commands: FeatureStatus.Supported,
     cliCalling: {
-      "infinite-tasks-timeout": SubFeatureStatus.NotVerified,
-      "processes-explorer": SubFeatureStatus.NotVerified,
+      "infinite-tasks-timeout": SubFeatureStatus.NotSupported,
+      "processes-explorer": SubFeatureStatus.NotSupported,
     },
     modelManagement: {
       filtering: SubFeatureStatus.NotSupported,
