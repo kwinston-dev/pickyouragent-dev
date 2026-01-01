@@ -23,7 +23,7 @@ Read more about the standard: https://agentskills.io/home
 **Supported agents:**
 
 - Cursor
-- Kilo Code (https://github.com/Kilo-Org/kilocode/pull/4702)
+- Kilo Code (https://kilo.ai/docs/features/skills)
 
 **Not supported agents:**
 
