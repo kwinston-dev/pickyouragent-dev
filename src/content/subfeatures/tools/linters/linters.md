@@ -16,9 +16,9 @@ You could make your own skill (see [partial/skills page](/features/documentation
 **Not supported agents:**
 
 - Codex
+- Kilo Code
 
 **Not verified yet:**
 
 - Claude Code
-- Kilo Code
 

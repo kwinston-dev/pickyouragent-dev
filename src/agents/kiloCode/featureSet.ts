@@ -22,9 +22,9 @@ export const kiloCode = declareSchema(
     },
     tools: {
       "web-search-engine": SubFeatureStatus.NotSupported,
-      "fetch-data": SubFeatureStatus.NotVerified,
-      browser: SubFeatureStatus.NotVerified,
-      linters: SubFeatureStatus.NotVerified,
+      "fetch-data": SubFeatureStatus.NotSupported,
+      browser: SubFeatureStatus.NotSupported,
+      linters: SubFeatureStatus.NotSupported,
     },
     commands: FeatureStatus.NotVerified,
     cliCalling: {
