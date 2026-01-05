@@ -33,6 +33,7 @@ export const codex = declareSchema(
     },
     modelManagement: {
       filtering: SubFeatureStatus.NotSupported,
+      "region-tuning": SubFeatureStatus.NotSupported,
     },
   },
 );

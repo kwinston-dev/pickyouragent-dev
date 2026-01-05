@@ -34,6 +34,7 @@ export const claudeCode = declareSchema(
     },
     modelManagement: {
       filtering: SubFeatureStatus.NotSupported,
+      "region-tuning": SubFeatureStatus.NotSupported,
     },
   },
 );

@@ -1,0 +1,32 @@
+---
+featureName: modelManagement
+subfeatureName: region-tuning
+---
+
+import ResponsiveImage from "../../../../components/ResponsiveImage.astro";
+import kiloCodeExample from "./kilo-code-example.png";
+
+Connect to providers based on location/region.
+
+Region tuning allows you to connect to provider endpoints based on your geographic location. This helps optimize response times by using endpoints closer to your location. For example, z.ai has mainland China endpoints and international endpoints. The China endpoints provide much better response times than international endpoints when accessed from mainland China.
+
+<ResponsiveImage
+  src={kiloCodeExample}
+  alt="Screenshot of Kilo Code provider configuration showing Z.ai entrypoint selection with China API and International API options."
+  caption="Region tuning in Kilo Code. The Z.ai provider configuration shows different entrypoints for China API and International API, allowing users to select endpoints based on their location."
+/>
+
+**Supported agents:**
+
+- Kilo Code
+- Cursor (a lot of built-in providers doesn't work in mainland China. I suppose the Cursor team handle the nearest endpoints based on your location)
+
+**Not supported agents:**
+
+- Claude Code
+- Codex
+
+**Not verified yet:**
+
+- None
+

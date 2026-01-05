@@ -35,6 +35,7 @@ export const cursor = declareSchema(
     },
     modelManagement: {
       filtering: SubFeatureStatus.Supported,
+      "region-tuning": SubFeatureStatus.PartiallySupported,
     },
   },
 );

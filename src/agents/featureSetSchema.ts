@@ -120,6 +120,9 @@ const cliCallingProcessesExplorerDesc = await resolveSubfeature(
 const modelManagementFilteringDesc = await resolveSubfeature(
   "modelmanagement/filtering/filtering",
 );
+const modelManagementRegionTuningDesc = await resolveSubfeature(
+  "modelmanagement/region-tuning/region-tuning",
+);
 
 export const featureSetSchema = z.object({
   planMode: feature(
@@ -250,6 +253,10 @@ export const featureSetSchema = z.object({
       filtering: subfeature({
         name: "filtering",
         description: modelManagementFilteringDesc,
+      }),
+      "region-tuning": subfeature({
+        name: "region-tuning",
+        description: modelManagementRegionTuningDesc,
       }),
     },
   ),
