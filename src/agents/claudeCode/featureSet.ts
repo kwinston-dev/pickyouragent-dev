@@ -45,5 +45,9 @@ export const claudeCode = declareSchema(
       debug: SubFeatureStatus.NotSupported,
       ask: SubFeatureStatus.PartiallySupported,
     },
+    subscriptions: [
+      { label: "z.ai", url: "https://z.ai/subscribe?ic=9GRH0KS07Z" },
+      { label: "max plan", url: "https://claude.com/pricing/max" },
+    ],
   },
 );

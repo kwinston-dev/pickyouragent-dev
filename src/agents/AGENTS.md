@@ -68,51 +68,6 @@ The description file is located at:
 src/content/subfeatures/planmode/dual-model/dual-model.md
 ```
 
-### Example: Looking Up a Subfeature Description
-
-**Goal:** Find the description for the "dual-model" subfeature in the "Plan Mode" feature
-
-**Step 1:** Open `src/agents/featureSetSchema.ts` and search for "dual-model"
-
-You'll find it defined in the planMode feature:
-
-```typescript
-planMode: feature(
-  {
-    name: "Plan Mode",
-    mainColor: "#3b82f6",
-    secondaryColor: "#60a5fa",
-    slug: "planmode",
-  },
-  {
-    "dual-model": subfeature({
-      name: "dual-model",
-      description: dualModelDesc,
-    }),
-    // ... other subfeatures
-  },
-),
-```
-
-**Step 2:** Look for where `dualModelDesc` is defined at the top of the file (around line 85):
-
-```typescript
-const dualModelDesc = await resolveSubfeature("planmode/dual-model/dual-model");
-```
-
-**Step 3:** The ID "planmode/dual-model/dual-model" tells you the path:
-
-- Navigate to `src/content/subfeatures/`
-- Follow the path: `planmode/dual-model/dual-model.md`
-- Open this file to read the full description, which includes a slogan, detailed explanation, and list of supported/unsupported agents
-
-**Alternative method:** If you don't have access to the TypeScript file, you can:
-
-1. Determine the feature category (Plan Mode → slug: planmode)
-2. Determine the subfeature key (dual-model)
-3. Navigate to `src/content/subfeatures/planmode/dual-model/dual-model.md`
-4. Open the file to read the description
-
 ### Feature Categories
 
 The following feature categories are defined in the schema:
@@ -125,6 +80,8 @@ The following feature categories are defined in the schema:
 | Commands         | commands         | #10b981    | #34d399         |
 | CLI Calling      | cli-calling      | #f97316    | #fb923c         |
 | Model Management | model-management | #ec4899    | #f472b6         |
+| Agent Mode       | agent-mode       | #ef4444    | #f87171         |
+| Subscriptions    | subscriptions    | #f43f5e    | #fb7185         |
 
 ### How to Get Feature Support for an Agent
 
@@ -143,47 +100,13 @@ For features with subfeatures, the status is an object mapping subfeature keys t
 
 **Step 1:** Open `src/agents/claudeCode/featureSet.ts`
 
-**Step 2:** Read the exported `claudeCode` object:
+**Step 2:** Read the exported `claudeCode` object to see support for each feature:
 
-```typescript
-export const claudeCode = declareSchema(
-  {
-    id: "claude-code",
-    name: "Claude Code",
-  },
-  {
-    planMode: {
-      "dual-model": SubFeatureStatus.Supported,
-      questions: SubFeatureStatus.NotVerified,
-      "plan-editing": SubFeatureStatus.NotVerified,
-      "orchestrator-mode": SubFeatureStatus.NotVerified,
-    },
-    documentation: {
-      filesystem: SubFeatureStatus.Supported,
-      tree: SubFeatureStatus.Supported,
-      // ... more subfeatures
-    },
-    tools: {
-      "web-search-engine": SubFeatureStatus.Supported,
-      // ... more subfeatures
-    },
-    commands: FeatureStatus.Supported,
-    cliCalling: {
-      // ... subfeature statuses
-    },
-    modelManagement: {
-      filtering: SubFeatureStatus.NotSupported,
-    },
-  },
-);
-```
+- `planMode` shows subfeature statuses like "dual-model": `SubFeatureStatus.Supported`
+- `commands` shows `FeatureStatus.Supported` (single value, no subfeatures)
+- `modelManagement` shows `filtering: SubFeatureStatus.NotSupported`
 
-**Step 3:** Interpret the values using the status enums (see Status Values section below):
-
-- Claude Code fully supports Plan Mode's "dual-model" subfeature
-- Claude Code's Questions support is not verified
-- Commands is fully supported
-- Model Management filtering is not supported
+**Step 3:** Interpret the values using the status enums (see Status Values section above).
 
 ## Status Values
 
@@ -208,6 +131,133 @@ Used for individual subfeatures within a feature.
 | `PartiallySupported` | The subfeature is partially supported               |
 | `NotSupported`       | The subfeature is not supported                     |
 | `NotVerified`        | The subfeature support status has not been verified |
+
+## Feature Display Types
+
+These values are used in the UI to display feature support status to users, providing clear visual feedback about each agent's capabilities.
+
+### yes
+
+Indicates that a feature is fully supported by the agent. Users can expect complete functionality with no limitations for this feature. This is represented visually as a green checkmark or a "Yes" label in comparison tables and feature lists.
+
+### partial
+
+Indicates that a feature is partially supported by the agent. The agent provides some functionality in this category, but with limitations, incomplete implementation, or reduced capabilities compared to full support. This is represented visually as a yellow indicator or "Partial" label.
+
+### no
+
+Indicates that a feature is not supported by the agent. The agent does not provide any functionality in this category. This is represented visually as a red X or "No" label.
+
+### with-subfeatures
+
+Indicates that a feature contains multiple subfeatures that should be displayed individually. This is used for complex features where different aspects need to be evaluated separately. Users can expand or drill into the feature to see support status for each subfeature.
+
+## Feature Status Calculation
+
+### Determining Display Type
+
+The display type for a feature is determined as follows:
+
+- **with-subfeatures**: If the feature schema has any subfeatures defined (non-empty subfeatures object)
+- **yes/partial/no**: If the feature schema has no subfeatures (empty subfeatures object), the display type matches the feature's status value directly
+
+### Aggregating Subfeature Status to Feature Status
+
+When a feature has subfeatures, its overall status is calculated by aggregating all subfeature statuses for a given agent:
+
+| Subfeature Combination         | Feature Status                    |
+| ------------------------------ | --------------------------------- |
+| All subfeatures = Supported    | Supported                         |
+| All subfeatures = NotVerified  | NotVerified                       |
+| All subfeatures = NotSupported | PartiallySupported (special case) |
+| Mix of different statuses      | PartiallySupported                |
+
+**Note:** When all subfeatures are `NotSupported`, the feature status becomes `PartiallySupported` rather than `NotSupported`. This indicates the feature category exists but has no working functionality.
+
+### Links Feature Type
+
+The "subscriptions" feature stores external URLs (documentation, pricing, blogs, etc.) specific to each agent. Unlike other features, links features don't have subfeatures - each agent defines its own unique array of links.
+
+#### SubscriptionLink Type
+
+```typescript
+type SubscriptionLink = {
+  label: string; // Display name (e.g., "Pricing", "Documentation")
+  url: string; // Full URL
+};
+```
+
+#### Adding Subscriptions to an Agent
+
+In the agent's `featureSet.ts`:
+
+```typescript
+import {
+  declareSchema,
+  FeatureStatus,
+  SubFeatureStatus,
+} from "../featureSetSchema";
+import type { SubscriptionLink } from "../featureSetSchema";
+
+export const myAgent = declareSchema(
+  {
+    id: "my-agent",
+    name: "My Agent",
+  },
+  {
+    // ... other features
+    subscriptions: [
+      { label: "Pricing", url: "https://agent.com/pricing" },
+      { label: "Documentation", url: "https://agent.com/docs" },
+    ],
+  },
+);
+```
+
+To mark an agent as not supporting subscriptions:
+
+```typescript
+subscriptions: FeatureStatus.NotSupported,
+```
+
+To have an agent with no subscriptions (empty state):
+
+```typescript
+subscriptions: [],
+```
+
+#### Feature Schema
+
+The `subscriptions` feature is defined in `featureSetSchema.ts` with three possible value types:
+
+1. `FeatureStatus` enum - displays a Badge component (e.g., for "NotSupported")
+2. `SubscriptionLink[]` array - displays a vertical list of links
+3. Empty subfeatures object `{}` - required by schema but not used for display
+
+#### Content Files
+
+Links features do not require subfeature markdown files. Only the main feature category file is needed:
+
+```
+src/content/features/subscriptions.mdx
+```
+
+#### Display
+
+In the comparison table:
+
+- Agents with link arrays: displays each link as a clickable element in a vertical list
+- Agents with `FeatureStatus.NotSupported`: displays "✕ no" badge
+- Agents with empty arrays: displays empty cell (or derived status badge)
+
+### Mapping to Status Values
+
+| Display Type       | Mapped To                                                                   |
+| ------------------ | --------------------------------------------------------------------------- |
+| `yes`              | `FeatureStatus.Supported` or `SubFeatureStatus.Supported`                   |
+| `partial`          | `FeatureStatus.PartiallySupported` or `SubFeatureStatus.PartiallySupported` |
+| `no`               | `FeatureStatus.NotSupported` or `SubFeatureStatus.NotSupported`             |
+| `with-subfeatures` | Features that have subfeature objects (not a single enum value)             |
 
 ## Agent Directories
 

@@ -45,5 +45,8 @@ export const kiloCode = declareSchema(
       debug: SubFeatureStatus.Supported,
       ask: SubFeatureStatus.Supported,
     },
+    subscriptions: [
+      { label: "z.ai", url: "https://z.ai/subscribe?ic=9GRH0KS07Z" },
+    ],
   },
 );

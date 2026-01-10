@@ -31,5 +31,6 @@ export const junie = declareSchema(
       debug: SubFeatureStatus.NotSupported,
       ask: SubFeatureStatus.Supported,
     },
+    subscriptions: FeatureStatus.NotSupported,
   },
 );

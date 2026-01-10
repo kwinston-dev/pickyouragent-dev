@@ -45,5 +45,9 @@ export const opencode = declareSchema(
       debug: SubFeatureStatus.NotSupported,
       ask: SubFeatureStatus.PartiallySupported,
     },
+    subscriptions: [
+      { label: "z.ai", url: "https://z.ai/subscribe?ic=9GRH0KS07Z" },
+      { label: "openai", url: "https://chatgpt.com/pricing/" },
+    ],
   },
 );

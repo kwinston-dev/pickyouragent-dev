@@ -1,37 +1,46 @@
-import { z } from 'zod';
-import type { Agent } from './featureSetSchema';
-import { render } from 'astro:content';
-import { 
-  FeatureStatus, 
-  SubFeatureStatus, 
-  featuresRegistry, 
-  subfeaturesRegistry, 
-  featureSetSchema 
-} from './featureSetSchema';
+import { z } from "zod";
+import type { Agent, SubscriptionLink } from "./featureSetSchema";
+import { render } from "astro:content";
+import {
+  FeatureStatus,
+  SubFeatureStatus,
+  featuresRegistry,
+  subfeaturesRegistry,
+  featureSetSchema,
+} from "./featureSetSchema";
 
 // Helper function to format display names
 function formatDisplayName(key: string): string {
   return key
-    .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 }
 
 // Type guard to check if a value is a FeatureStatus enum
 function isFeatureStatus(value: any): value is FeatureStatus {
-  return typeof value === 'string' && Object.values(FeatureStatus).includes(value as FeatureStatus);
+  return (
+    typeof value === "string" &&
+    Object.values(FeatureStatus).includes(value as FeatureStatus)
+  );
 }
 
 // Helper function to aggregate subfeature statuses
-function aggregateSubfeatureStatuses(statuses: SubFeatureStatus[]): FeatureStatus {
+function aggregateSubfeatureStatuses(
+  statuses: SubFeatureStatus[],
+): FeatureStatus {
   if (statuses.length === 0) {
     return FeatureStatus.NotSupported;
   }
-  
-  const allSupported = statuses.every(s => s === SubFeatureStatus.Supported);
-  const allNotSupported = statuses.every(s => s === SubFeatureStatus.NotSupported);
-  const allNotVerified = statuses.every(s => s === SubFeatureStatus.NotVerified);
-  
+
+  const allSupported = statuses.every((s) => s === SubFeatureStatus.Supported);
+  const allNotSupported = statuses.every(
+    (s) => s === SubFeatureStatus.NotSupported,
+  );
+  const allNotVerified = statuses.every(
+    (s) => s === SubFeatureStatus.NotVerified,
+  );
+
   if (allSupported) {
     return FeatureStatus.Supported;
   } else if (allNotVerified) {
@@ -51,11 +60,13 @@ function aggregateFeatureStatuses(statuses: FeatureStatus[]): FeatureStatus {
   if (statuses.length === 0) {
     return FeatureStatus.NotSupported;
   }
-  
-  const allSupported = statuses.every(s => s === FeatureStatus.Supported);
-  const allNotSupported = statuses.every(s => s === FeatureStatus.NotSupported);
-  const allNotVerified = statuses.every(s => s === FeatureStatus.NotVerified);
-  
+
+  const allSupported = statuses.every((s) => s === FeatureStatus.Supported);
+  const allNotSupported = statuses.every(
+    (s) => s === FeatureStatus.NotSupported,
+  );
+  const allNotVerified = statuses.every((s) => s === FeatureStatus.NotVerified);
+
   if (allSupported) {
     return FeatureStatus.Supported;
   } else if (allNotVerified) {
@@ -69,16 +80,24 @@ function aggregateFeatureStatuses(statuses: FeatureStatus[]): FeatureStatus {
 }
 
 // Helper function to get subfeature statuses from a feature object
-function getSubfeatureStatuses(featureValue: any, featureKeys: string[]): SubFeatureStatus[] {
+function getSubfeatureStatuses(
+  featureValue: any,
+  featureKeys: string[],
+): SubFeatureStatus[] {
   if (isFeatureStatus(featureValue)) {
     return [];
   }
   const featureObj = featureValue as Record<string, SubFeatureStatus>;
-  return featureKeys.map((key) => featureObj[key]).filter((s): s is SubFeatureStatus => s !== undefined);
+  return featureKeys
+    .map((key) => featureObj[key])
+    .filter((s): s is SubFeatureStatus => s !== undefined);
 }
 
 // Helper function to get a single subfeature status
-function getSubfeatureStatus(featureValue: any, featureKey: string): SubFeatureStatus {
+function getSubfeatureStatus(
+  featureValue: any,
+  featureKey: string,
+): SubFeatureStatus {
   if (isFeatureStatus(featureValue)) {
     return SubFeatureStatus.NotSupported;
   }
@@ -96,21 +115,21 @@ export class ParsedSubfeature {
   readonly slug: string;
   readonly statusByAgent: Map<string, SubFeatureStatus>;
   readonly aggregatedStatus: FeatureStatus;
-  readonly Content: import('astro').AstroComponentFactory;
+  readonly Content: import("astro").AstroComponentFactory;
 
   constructor(
     key: string,
     name: string,
     slug: string,
     statusByAgent: Map<string, SubFeatureStatus>,
-    Content: import('astro').AstroComponentFactory
+    Content: import("astro").AstroComponentFactory,
   ) {
     this.key = key;
     this.name = name;
     this.slug = slug;
     this.statusByAgent = statusByAgent;
     this.Content = Content;
-    
+
     // Aggregate status across all agents
     const statuses = Array.from(statusByAgent.values());
     this.aggregatedStatus = aggregateSubfeatureStatuses(statuses);
@@ -130,6 +149,8 @@ export class ParsedFeature {
   readonly subfeatures: ParsedSubfeature[];
   readonly aggregatedStatus: FeatureStatus;
   readonly statusByAgent: Map<string, FeatureStatus>;
+  readonly linksByAgent: Map<string, SubscriptionLink[]>;
+  readonly hasLinks: boolean;
 
   constructor(
     key: string,
@@ -138,7 +159,9 @@ export class ParsedFeature {
     mainColor: string,
     secondaryColor: string,
     subfeatures: ParsedSubfeature[],
-    statusByAgent: Map<string, FeatureStatus>
+    statusByAgent: Map<string, FeatureStatus>,
+    linksByAgent: Map<string, SubscriptionLink[]>,
+    hasLinks: boolean,
   ) {
     this.key = key;
     this.name = name;
@@ -147,7 +170,9 @@ export class ParsedFeature {
     this.secondaryColor = secondaryColor;
     this.subfeatures = subfeatures;
     this.statusByAgent = statusByAgent;
-    
+    this.linksByAgent = linksByAgent;
+    this.hasLinks = hasLinks;
+
     // Aggregate status across all agents
     const statuses = Array.from(statusByAgent.values());
     this.aggregatedStatus = aggregateFeatureStatuses(statuses);
@@ -158,7 +183,13 @@ export class ParsedFeature {
   }
 
   getSubfeature(slug: string): ParsedSubfeature | undefined {
-    return this.subfeatures.find(sub => sub.slug === slug || sub.key === slug);
+    return this.subfeatures.find(
+      (sub) => sub.slug === slug || sub.key === slug,
+    );
+  }
+
+  getLinksByAgent(agentId: string): SubscriptionLink[] {
+    return this.linksByAgent.get(agentId) || [];
   }
 }
 
@@ -200,31 +231,37 @@ export class ParsedTable {
   }
 
   getFeature(slug: string): ParsedFeature | undefined {
-    return this.features.find(f => f.slug === slug || f.key === slug);
+    return this.features.find((f) => f.slug === slug || f.key === slug);
   }
 
   getFeatureByKey(key: string): ParsedFeature | undefined {
-    return this.features.find(f => f.key === key);
+    return this.features.find((f) => f.key === key);
   }
 
   private async parseFeatures(): Promise<ParsedFeature[]> {
     const features: ParsedFeature[] = [];
     const categoryOrderEnum = featureSetSchema.keyof().enum;
-    const categoryOrder = Object.values(categoryOrderEnum) as (keyof typeof categoryOrderEnum)[];
+    const categoryOrder = Object.values(
+      categoryOrderEnum,
+    ) as (keyof typeof categoryOrderEnum)[];
 
     for (const categoryKey of categoryOrder) {
       const categorySchema = featureSetSchema.shape[categoryKey];
       const categoryMeta = featuresRegistry.get(categorySchema);
-      
+
       if (!categoryMeta) {
-        throw new Error(`Category ${categoryKey} not found in featuresRegistry`);
+        throw new Error(
+          `Category ${categoryKey} not found in featuresRegistry`,
+        );
       }
 
       // Extract subfeature keys from schema
       const subfeatureKeys: string[] = [];
       const categorySchemaAny = categorySchema as any;
       if (categorySchemaAny instanceof z.ZodUnion) {
-        const objectOption = categorySchemaAny.options.find((opt: any) => opt instanceof z.ZodObject);
+        const objectOption = categorySchemaAny.options.find(
+          (opt: any) => opt instanceof z.ZodObject,
+        );
         if (objectOption instanceof z.ZodObject) {
           subfeatureKeys.push(...Object.keys(objectOption.shape));
         }
@@ -238,12 +275,18 @@ export class ParsedTable {
         // Get subfeature schema and metadata
         let subfeatureSchema: z.ZodType | undefined;
         if (categorySchemaAny instanceof z.ZodUnion) {
-          const objectOption = categorySchemaAny.options.find((opt: any) => opt instanceof z.ZodObject);
+          const objectOption = categorySchemaAny.options.find(
+            (opt: any) => opt instanceof z.ZodObject,
+          );
           if (objectOption instanceof z.ZodObject) {
-            subfeatureSchema = (objectOption.shape as Record<string, z.ZodType>)[subfeatureKey];
+            subfeatureSchema = (
+              objectOption.shape as Record<string, z.ZodType>
+            )[subfeatureKey];
           }
         } else if (categorySchemaAny instanceof z.ZodObject) {
-          subfeatureSchema = (categorySchemaAny.shape as Record<string, z.ZodType>)[subfeatureKey];
+          subfeatureSchema = (
+            categorySchemaAny.shape as Record<string, z.ZodType>
+          )[subfeatureKey];
         }
 
         if (!subfeatureSchema) continue;
@@ -253,17 +296,20 @@ export class ParsedTable {
           throw new Error(`Subfeature metadata not found for ${subfeatureKey}`);
         }
         if (!subfeatureMeta.description) {
-          throw new Error(`Subfeature description not found for ${subfeatureKey}`);
+          throw new Error(
+            `Subfeature description not found for ${subfeatureKey}`,
+          );
         }
-        
-        const subfeatureName = subfeatureMeta.name 
-          ? formatDisplayName(subfeatureMeta.name) 
+
+        const subfeatureName = subfeatureMeta.name
+          ? formatDisplayName(subfeatureMeta.name)
           : formatDisplayName(subfeatureKey);
 
         // Collect status by agent
         const statusByAgent = new Map<string, SubFeatureStatus>();
         for (const agent of this.agents) {
-          const featureValue = agent.features[categoryKey as keyof typeof agent.features];
+          const featureValue =
+            agent.features[categoryKey as keyof typeof agent.features];
           const status = getSubfeatureStatus(featureValue, subfeatureKey);
           statusByAgent.set(agent.meta.id, status);
         }
@@ -276,16 +322,17 @@ export class ParsedTable {
             subfeatureName,
             subfeatureKey, // Use key as slug for subfeatures
             statusByAgent,
-            renderedContent.Content
-          )
+            renderedContent.Content,
+          ),
         );
       }
 
       // Collect feature-level status by agent
       const featureStatusByAgent = new Map<string, FeatureStatus>();
       for (const agent of this.agents) {
-        const featureValue = agent.features[categoryKey as keyof typeof agent.features];
-        
+        const featureValue =
+          agent.features[categoryKey as keyof typeof agent.features];
+
         if (isFeatureStatus(featureValue)) {
           featureStatusByAgent.set(agent.meta.id, featureValue);
         } else {
@@ -296,8 +343,30 @@ export class ParsedTable {
         }
       }
 
-      const featureName = categoryMeta.name 
-        ? formatDisplayName(categoryMeta.name) 
+      // Collect links by agent for this feature
+      const featureLinksByAgent = new Map<string, SubscriptionLink[]>();
+      let featureHasLinks = false;
+
+      for (const agent of this.agents) {
+        const featureValue =
+          agent.features[categoryKey as keyof typeof agent.features];
+
+        // Check if feature value is an array (links)
+        if (Array.isArray(featureValue)) {
+          featureLinksByAgent.set(
+            agent.meta.id,
+            featureValue as SubscriptionLink[],
+          );
+          if (featureValue.length > 0) {
+            featureHasLinks = true;
+          }
+          // Override status for agents with links
+          featureStatusByAgent.set(agent.meta.id, FeatureStatus.Supported);
+        }
+      }
+
+      const featureName = categoryMeta.name
+        ? formatDisplayName(categoryMeta.name)
         : formatDisplayName(categoryKey);
 
       features.push(
@@ -308,8 +377,10 @@ export class ParsedTable {
           categoryMeta.mainColor,
           categoryMeta.secondaryColor,
           parsedSubfeatures,
-          featureStatusByAgent
-        )
+          featureStatusByAgent,
+          featureLinksByAgent,
+          featureHasLinks,
+        ),
       );
     }
 

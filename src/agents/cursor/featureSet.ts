@@ -46,5 +46,6 @@ export const cursor = declareSchema(
       debug: SubFeatureStatus.Supported,
       ask: SubFeatureStatus.Supported,
     },
+    subscriptions: FeatureStatus.NotSupported,
   },
 );

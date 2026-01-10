@@ -2,6 +2,7 @@
 import type { Agent } from '../agents/featureSetSchema';
 import { ParsedFeature } from '../agents/parsedTable';
 import Badge from './Badge.astro';
+import LinksList from './LinksList.astro';
 
 interface Props {
   feature: ParsedFeature;
@@ -21,7 +22,15 @@ const { feature, agents } = Astro.props;
       const status = feature.statusByAgent.get(agent.meta.id) || feature.aggregatedStatus;
       return (
         <td>
-          <Badge status={status} />
+          {feature.key === 'subscriptions' ? (
+            feature.getLinksByAgent(agent.meta.id).length > 0 ? (
+              <LinksList links={feature.getLinksByAgent(agent.meta.id)} mainColor={feature.mainColor} />
+            ) : (
+              <Badge status={status} />
+            )
+          ) : (
+            <Badge status={status} />
+          )}
         </td>
       );
     })}

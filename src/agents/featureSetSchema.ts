@@ -16,6 +16,11 @@ export enum FeatureStatus {
   NotVerified = "not-verified",
 }
 
+export type SubscriptionLink = {
+  label: string;
+  url: string;
+};
+
 type FeatureMeta = {
   name: string;
   mainColor: string;
@@ -74,9 +79,16 @@ function feature<T extends Record<string, z.ZodType>>(
   subfeatures: T,
 ) {
   const subfeaturesSchema = z.object(subfeatures);
+  const linksSchema = z.array(
+    z.object({
+      label: z.string(),
+      url: z.string().url(),
+    }),
+  );
   const featureSchema = z.union([
     z.nativeEnum(FeatureStatus),
     subfeaturesSchema,
+    linksSchema,
   ]);
   featuresRegistry.add(featureSchema, meta);
   return featureSchema;
@@ -128,6 +140,15 @@ const agentModeDebugDesc = await resolveSubfeature("agentmode/debug/debug");
 const agentModeAskDesc = await resolveSubfeature("agentmode/ask/ask");
 
 export const featureSetSchema = z.object({
+  subscriptions: feature(
+    {
+      name: "Subscriptions",
+      mainColor: "#f43f5e",
+      secondaryColor: "#fb7185",
+      slug: "subscriptions",
+    },
+    {},
+  ),
   planMode: feature(
     {
       name: "Plan Mode",
