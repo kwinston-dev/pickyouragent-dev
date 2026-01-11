@@ -46,6 +46,8 @@ export const cursor = declareSchema(
       debug: SubFeatureStatus.Supported,
       ask: SubFeatureStatus.Supported,
     },
-    subscriptions: FeatureStatus.NotSupported,
+    subscriptions: [
+      { label: "z.ai", url: "https://z.ai/subscribe?ic=9GRH0KS07Z" },
+    ],
   },
 );
